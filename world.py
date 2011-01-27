@@ -2,7 +2,14 @@
 __author__ = 'averrin'
 
 
-TILESET={0:'<span style="color:#111;">.</span>',1:'▉',2:'■',3:'■',
+TILESET={
+         0:'<span style="color:#111;">.</span>',
+#         0:'<img src="tilesets/cutted/1/5_20.png" height=12>',
+         1:'▉',
+#         1:'<img src="tilesets/cutted/1/3_13.png" height=12>',
+#         2:'<img src="tilesets/cutted/1/1_14.png" height=12>',
+         2:'■',
+         3:'■',
          'none':' ',
          'hero':'<span style="color:green;">◐</span>',
          'door_closed_v':'|',
@@ -79,6 +86,7 @@ class Window(Tile):
         Tile.__init__(self,x,y,{'h':'window_h','v':'window_v'}[type])
 
     def onCome(self):
+        self.stage.core.app['print'](u'Ухты-йопты, окно!')
         return False
 
 class Door(Tile):
@@ -198,7 +206,7 @@ class Matrix(list):
             __row=''
             for t in row:
                 __row+=str(t)
-            __str+=__row+'\n'
+            __str+=__row+'<br>'
         return __str
 
 class Room(list):
@@ -240,9 +248,9 @@ def main():
     stage.set(18,6,Door(type='h',closed=True))
     stage.set(12,8,Door(type='h',closed=True,locked=True))
     stage.set(0,4,Window(type='v'))
-#    stage.set(0,5,Window(type='v'))
+    stage.set(0,5,Window(type='v'))
     stage.set(4,0,Window(type='h'))
-    stage.set(3,0,Window(type='h'))
+#    stage.set(3,0,Window(type='h'))
     rooms=[]
     rooms.append(Room(stage.getList(),(0,0),(15,7),'Your room'))
     rooms.append(Room(stage.getList(),(15,0),(35,7),'Kiro room'))
@@ -250,8 +258,9 @@ def main():
     rooms.append(Room(stage.getList(),(0,8),(15,16),'Hall'))
     stage.rooms=rooms
 #    stage.removeArea((2,12),(14,14))
-    stage.fillArea((2,12),(14,14),'<span style="color:red;">*</span>')
-    stage[4][7].sign='<img src="icons/real_poison.png" width="8">'
+#    stage.fillArea((2,12),(14,14),'<span style="color:red;background:cyan;">*</span>')
+#    stage[4][7].sign='<img src="icons/real_poison.png" width="8">'
+#    print stage
     return stage
 #    t=stage.get(0,0).get('bottom')
 #    for i in xrange(30):

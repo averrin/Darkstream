@@ -465,7 +465,7 @@ def main():
     app.show()
 #    app.textBrowser.setOpenLinks(False)
     app.textBrowser.setSource=app.m_echo
-#    app.textBrowser.setStyleSheet("QWidget a  {color:green !important;}")
+    app.textBrowser.setStyleSheet("QWidget {line-height: 0 !important;}")
 #    app.api.echo('<style>a { color: green; } a:visited { color: red; }</style>')
     app.api.echo('Welcome to <a href="Darkstream" class="link">Darkstream</a>.')
     app.api.echo('TODO: full-functionality UI')

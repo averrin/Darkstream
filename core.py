@@ -31,7 +31,8 @@ class Core(object):
 #        self.app['echo']('<style>QWidget * {font-size: 18pt; color:blue;}</style>')
         self.app['print']('Welcome to Darkstream World!')
         self.app['print']('<img src="icons/real_poison.png" height="64">')
-        self.app['print'](u'Бумка!')
+        self.app['print'](u'С графикой что-то не выходит=( К тому же тормозит, гад=(')
+        self.app['print'](u'Пожалуй сначала функционал, а уже потом рюшечки.')
         self.floor=0
         self.app.connect(self.app, SIGNAL('time'), self.stream)
         self.app.connect(self.app, SIGNAL('redraw'), self.app['redraw'])
