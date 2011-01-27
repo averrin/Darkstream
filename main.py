@@ -402,6 +402,9 @@ class Springstone(QMainWindow,App):
                         (self.settings['version'],self.settings['email'],self.settings['author'],\
                         getFileContent(cwd+'README')))
 
+    def m_print(self,msg):
+        self.mainBrowser.insertHtml(msg+'<br>')
+
     def m_help(self):
         self['dialog']('about','Help',getFileContent(cwd+'HELP'))
 

@@ -38,7 +38,11 @@ class Tile(object):
             return ''
 
     def onCome(self):
-        return True
+        if not self.char:
+            return True
+        else:
+            self.char.onTouch()
+            return False
 
     def setChar(self,char=''):
         self.char=char

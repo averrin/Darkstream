@@ -12,6 +12,8 @@ class Core(object):
     def __init__(self,project):
         self.project=project
         self.items=[]
+        global core
+        core=self
 
 
     def onAppInit(self):
@@ -26,8 +28,9 @@ class Core(object):
         self.stage=world.main()
         self.app['setText'](self.stage)
 #        self.app['echo']('<style>QWidget * {font-size: 18pt; color:blue;}</style>')
-        self.app['echo']('Welcome to Darkstream World!')
-        self.app['echo']('<img src="icons/real_poison.png" height="64">')
+        self.app['print']('Welcome to Darkstream World!')
+        self.app['print']('<img src="icons/real_poison.png" height="64">')
+        self.app['print'](u'Бумка!')
         self.floor=0
         self.app.connect(self.app, SIGNAL('time'), self.stream)
         self.app.connect(self.app, SIGNAL('redraw'), self.app['redraw'])
@@ -39,7 +42,9 @@ class Core(object):
         self.stream.start()
         self.hero=Hero()
         self.h=self.stage[4][6]
-        self.h.setChar(self.hero)
+        self.hero.spawn(self.h)
+        kiro=NPC()
+        kiro.spawn(self.stage[5][12])
 
     def stream(self,*args):
         self.app['setStatusMessage']('%s at %s' % (self.hero.Name,self.hero.coord))
@@ -78,12 +83,23 @@ class Core(object):
     def m_itemClicked(self,item):
         pass
 
-class Hero(Char):
+class NPC(Char):
     def __init__(self,*args,**kwargs):
-        Char.__init__(self,*args,**kwargs)
-        self.coord=(0,0)
-        self.sign='<span style="color:green;">◐</span>'
+       Char.__init__(self,*args,**kwargs)
+       self.coord=(0,0)
+       self.sign='<span style="color:yellow;">◐</span>'
 
+    def spawn(self,tile):
+        tile.setChar(self)
+
+    def onTouch(self):
+        core.app['print'](u'Иди на хрен, мальчик!')
+
+
+class Hero(NPC):
+    def __init__(self,*args,**kwargs):
+        NPC.__init__(self,*args,**kwargs)
+        self.sign='<span style="color:green;">◐</span>'
 
 import threading, time
 class Stream(QThread):
