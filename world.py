@@ -36,12 +36,48 @@ class Tile(object):
         else:
             return ''
 
+    def onCome(self):
+        return True
+
     def __str__(self):
         if not self.sign:
             return TILESET[self.type]
         else:
             return self.sign
 #        return '(%s,%s)' % (str(self.x).zfill(2),str(self.y).zfill(2))
+
+class Wall(Tile):
+    def __init__(self,x=0,y=0,type='v'):
+        Tile.__init__(self,x,y,{'h':1,'v':2}[type])
+
+    def onCome(self):
+        return False
+
+
+class Window(Tile):
+    def __init__(self,x=0,y=0,type='v'):
+        Tile.__init__(self,x,y,{'h':'window_h','v':'window_v'}[type])
+
+    def onCome(self):
+        return False
+
+class Door(Tile):
+    def __init__(self,x=0,y=0,type='v',closed=False,locked=False,lock_force=0):
+        self.closed=closed
+        self.locked=locked
+        self.d=type
+        Tile.__init__(self,x,y,{'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][closed])
+
+
+    def onCome(self):
+        if self.closed:
+            if not self.locked:
+                self.closed=False
+                self.type={'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed]
+            return False
+        else:
+            return True
+
 
 class Matrix(list):
     def __init__(self,rows=1,columns=0,room=False):
@@ -56,15 +92,15 @@ class Matrix(list):
         if room:
             for i,row in enumerate(self):
                 if not i or i == self.rows-1:
-                    for t in row:
-                        t.type=2
-                        row[0].type=3
-                        row[-1].type=3
+                    for c,t in enumerate(row):
+                        row[c]=Wall(c,i,'v')
+                        row[0]=Wall(c,i,'v')
+                        row[-1]=Wall(c,i,'v')
                 else:
                     for ii,t in enumerate(row):
                         t.type=0
-                    row[0].type=1
-                    row[-1].type=1
+                    row[0]=Wall(c,i,'h')
+                    row[-1]=Wall(c,i,'h')
 
     def getList(self):
         __list=[]
@@ -99,7 +135,7 @@ class Matrix(list):
             end=self.rows-1
         for i,row in enumerate(self):
             if i in range(start,end) and i!=0 and i!=self.rows-1:
-                row[x].type=1
+                row[x]=Wall(row[x].x,row[i].y,'h')
 
     def addVWall(self,y,start=0,end=0):
         if not end:
@@ -107,7 +143,7 @@ class Matrix(list):
         row=self[y]
         for i,t in enumerate(row):
             if i in range(start,end) and i!=0 and i!=self.columns-1:
-                t.type=2
+                row[i]=Wall(t.x,t.y,'v')
 
     def fillArea(self,tl,br,type):
         area=self
@@ -165,13 +201,15 @@ def main():
     stage.addVWall(6)
     stage.addVWall(8,end=15)
     stage.addHWall(15)
-    stage.set(15,4,Tile(type='door_open_v'))
-    stage.set(15,7,Tile(type='door_closed_v'))
-    stage.set(3,6,Tile(type='door_closed_h'))
-    stage.set(18,6,Tile(type='door_closed_h'))
-    stage.set(12,8,Tile(type='door_closed_h'))
-    stage.set(0,4,Tile(type='window_v'))
-    stage.set(4,0,Tile(type='window_h'))
+    stage.set(15,4,Door(type='v'))
+    stage.set(15,7,Door(type='v',closed=True))
+    stage.set(3,6,Door(type='h'))
+    stage.set(18,6,Door(type='h',closed=True))
+    stage.set(12,8,Door(type='h',closed=True,locked=True))
+    stage.set(0,4,Window(type='v'))
+#    stage.set(0,5,Window(type='v'))
+    stage.set(4,0,Window(type='h'))
+    stage.set(3,0,Window(type='h'))
     rooms=[]
     rooms.append(Room(stage.getList(),(0,0),(15,7),'Your room'))
     rooms.append(Room(stage.getList(),(15,0),(35,7),'Kiro room'))

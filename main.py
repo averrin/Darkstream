@@ -285,8 +285,17 @@ class Springstone(QMainWindow,App):
 
 
     def keyPressEvent(self, event):
+        print(event.key())
         if event.key()==16777216:
             self.searchLine.clear()
+        elif event.key() in [87,16777235]:
+            self['n']()
+        elif event.key() in [83,16777237]:
+            self['s']()
+        elif event.key() in [65,16777234]:
+            self['w']()
+        elif event.key() in [68,16777236]:
+            self['e']()
 
     def appendSM(self,sm):
         self.smTB=QToolButton()
