@@ -39,10 +39,10 @@ class Core(object):
         self.stream.start()
         self.hero=Hero()
         self.h=self.stage[4][6]
-        self.h.char=self.hero
+        self.h.setChar(self.hero)
 
     def stream(self,*args):
-        self.app['setStatusMessage']('Stream> %s' % args[0])
+        self.app['setStatusMessage']('%s at %s' % (self.hero.Name,self.hero.coord))
 
 #    def setStatusMessage(self,msg):
 #        print '#',msg
@@ -67,10 +67,10 @@ class Core(object):
         if self.h.get(d).onCome():
 #            self.m_redraw()
 #            self.h.type=self.floor
-            self.h.char=''
+            self.h.setChar()
             self.h = self.h.get(d)
 #            self.floor=self.h.type
-            self.h.char=self.hero
+            self.h.setChar(self.hero)
 #            self.m_redraw()
 #        else:
 #            self.m_redraw()
@@ -81,6 +81,7 @@ class Core(object):
 class Hero(Char):
     def __init__(self,*args,**kwargs):
         Char.__init__(self,*args,**kwargs)
+        self.coord=(0,0)
         self.sign='<span style="color:green;">◐</span>'
 
 

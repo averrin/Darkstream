@@ -40,6 +40,19 @@ class Tile(object):
     def onCome(self):
         return True
 
+    def setChar(self,char=''):
+        self.char=char
+        if char:
+            self.onCharEnter()
+            char.coord=(self.x,self.y)
+            char.tile=self
+            self.onCharLeave()
+
+    def onCharEnter(self):
+        pass
+    def onCharLeave(self):
+        pass
+
     def __str__(self):
         if self.char:
             return self.char.sign
@@ -73,6 +86,9 @@ class Door(Tile):
 
 
     def onCome(self):
+        return self.open()
+
+    def open(self):
         if self.closed:
             if not self.locked:
                 self.closed=False
@@ -80,6 +96,14 @@ class Door(Tile):
             return False
         else:
             return True
+
+    def onCharLeave(self):
+        self.close()
+
+    def close(self):
+        self.closed=True
+        self.type={'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed]
+
 
 
 class Matrix(list):
