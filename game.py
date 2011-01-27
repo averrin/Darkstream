@@ -34,7 +34,7 @@ class World(Cube):
 #c=Gem('ruby')
 #d=Gem('diamond')
 
-hero=Hero()
+hero=Char()
 gemchest=GemChest()
 inv=hero.inventory
 #inv=Inventory()

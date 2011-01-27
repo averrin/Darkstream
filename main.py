@@ -285,7 +285,7 @@ class Springstone(QMainWindow,App):
 
 
     def keyPressEvent(self, event):
-        print(event.key())
+#        print(event.key())
         if event.key()==16777216:
             self.searchLine.clear()
         elif event.key() in [87,16777235]:

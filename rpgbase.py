@@ -397,7 +397,7 @@ class Doll(Cube):
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-class Hero(object):
+class Char(object):
 	def __init__(self):
 		self.inventory=Inventory()
 		self.inventory.add(Coin())
@@ -616,7 +616,4 @@ class Effect(Shiver):
 	def __init__(self):
 		super(Effect,self).__init__('effect')
 
-class Stream(Cube):
-	def __init__(self):
-		super(self.__class__,self).__init__(Effect)
 

@@ -4,7 +4,8 @@ import uuid
 from PyQt4.QtGui import *
 import json
 import world
-import game
+#import game
+from rpgbase import *
 from PyQt4.QtCore import *
 
 class Core(object):
@@ -27,9 +28,8 @@ class Core(object):
 #        self.app['echo']('<style>QWidget * {font-size: 18pt; color:blue;}</style>')
         self.app['echo']('Welcome to Darkstream World!')
         self.app['echo']('<img src="icons/real_poison.png" height="64">')
-        self.h=self.stage[4][6]
         self.floor=0
-        self.app.connect(self.app, SIGNAL('time'), self.app['setStatusMessage'])
+        self.app.connect(self.app, SIGNAL('time'), self.stream)
         self.app.connect(self.app, SIGNAL('redraw'), self.app['redraw'])
         self.stream=Stream()
         self.stream.core=self
@@ -37,6 +37,12 @@ class Core(object):
         self.app.threads_.append(self.stream)
         self.app.statusbar.showMessage(str('wtf?'))
         self.stream.start()
+        self.hero=Hero()
+        self.h=self.stage[4][6]
+        self.h.char=self.hero
+
+    def stream(self,*args):
+        self.app['setStatusMessage']('Stream> %s' % args[0])
 
 #    def setStatusMessage(self,msg):
 #        print '#',msg
@@ -60,16 +66,23 @@ class Core(object):
     def m_move(self,d):
         if self.h.get(d).onCome():
 #            self.m_redraw()
-            self.h.type=self.floor
+#            self.h.type=self.floor
+            self.h.char=''
             self.h = self.h.get(d)
-            self.floor=self.h.type
-            self.h.type='hero'
+#            self.floor=self.h.type
+            self.h.char=self.hero
 #            self.m_redraw()
 #        else:
 #            self.m_redraw()
 
     def m_itemClicked(self,item):
         pass
+
+class Hero(Char):
+    def __init__(self,*args,**kwargs):
+        Char.__init__(self,*args,**kwargs)
+        self.sign='<span style="color:green;">◐</span>'
+
 
 import threading, time
 class Stream(QThread):
@@ -88,7 +101,7 @@ class Stream(QThread):
 #            time.sleep(1)
         while self.Trig:
             for n in xrange(1):
-                time.sleep(0.5)
+                time.sleep(0.1)
 #            self.app.statusbar.showMessage(str(self.i))
 #            self.app['setStatusMessage']('chpok')
             self.app.emit(SIGNAL('redraw'))

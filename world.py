@@ -22,6 +22,7 @@ class Tile(object):
         self.desc=''
         self.gdesc=''
         self.sign=''
+        self.char=''
 
     def get(self,d):
         WORLD=self.stage
@@ -40,6 +41,8 @@ class Tile(object):
         return True
 
     def __str__(self):
+        if self.char:
+            return self.char.sign
         if not self.sign:
             return TILESET[self.type]
         else:
@@ -197,7 +200,7 @@ class Room(list):
 
 def main():
     stage=Matrix(16,35,room=True)
-    stage.set(6,4,Tile(type='hero'))
+#    stage.set(6,4,Tile(type='hero'))
     stage.addVWall(6)
     stage.addVWall(8,end=15)
     stage.addHWall(15)
