@@ -26,6 +26,7 @@ class Core(object):
 
     def onAppShow(self):
         self.stage=world.main()
+        self.stage.core=self
         self.app['setText'](self.stage)
 #        self.app['echo']('<style>QWidget * {font-size: 18pt; color:blue;}</style>')
         self.app['print']('Welcome to Darkstream World!')

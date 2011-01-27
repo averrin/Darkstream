@@ -97,6 +97,8 @@ class Door(Tile):
             if not self.locked:
                 self.closed=False
                 self.type={'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed]
+            else:
+                self.stage.core.app['print'](u'Заперто!')
             return False
         else:
             return True
