@@ -86,6 +86,7 @@ class Springstone(QMainWindow,App):
 #        self.textBrowser.setFontPointSize(18)
 
 
+#        self['dialog']('progress')
         self.scene = QGraphicsScene()
         self.graphicsView.setScene(self.scene)
         self.graphicsView.mousePressEvent=self.mousePressEvent
@@ -361,6 +362,9 @@ class Springstone(QMainWindow,App):
             QMessageBox.critical(self,title,text)
         elif type=='about':
             QMessageBox.about(self,title,text)
+        elif type=='progress':
+            pd=QProgressDialog(title,text,0,0,self)
+            pd.show()
 
     def m_addToolButton(self,icon,plugin,method):
         tb=QToolButton()
@@ -485,7 +489,7 @@ class Springstone(QMainWindow,App):
         try:
             item=self.scene.itemAt(self.mouse[0],self.mouse[1]).tile.info()
             self.coord.setHtml('<span style="color:green;background:black;">%d,%d -- %s</span>'%(self.mouse[0],self.mouse[1],item))
-        except:
+        except Exception,e:
             pass
 
 import threading

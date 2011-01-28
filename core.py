@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+import random
 import re
 import uuid
 from PyQt4.QtGui import *
 import json
 import world
+from world import TILESET
 #import game
 from rpgbase import *
 from PyQt4.QtCore import *
@@ -86,7 +88,12 @@ class Core(object):
             bg=self.app['drawImage'](tile.getBackground(),tile.y*32,tile.x*32)
             pm=str(tile)
             tile.item=self.app['drawImage'](pm,tile.y*32,tile.x*32)
+            tile.item.tile=tile
             pm=QPixmap(pm)
+            if not tile.type:
+                ang=random.randint(0,5)*90
+                trans=QTransform()
+#                pm=pm.transformed(trans.rotate(ang))
             mask=pm.createHeuristicMask()
             pm.setMask(mask)
             tile.item.setPixmap(pm)
@@ -96,15 +103,8 @@ class Core(object):
 
 
     def m_move(self,d):
-        if self.h.get(d).onCome():
-#            self.m_redraw()
-            self.h.setChar()
-            self.h = self.h.get(d)
-#            self.floor=self.h.type
-            self.h.setChar(self.hero)
-#            self.m_redraw()
-#        else:
-#            self.m_redraw()
+        self.hero.move(d)
+
 
     def m_itemClicked(self,item):
         pass
@@ -121,11 +121,12 @@ class NPC(Char):
     def __init__(self,*args,**kwargs):
         Char.__init__(self,*args,**kwargs)
         self.coord=(0,0)
-        self.sign='tilesets/cutted/char/9_2.png'
+        self.sign=TILESET['char_9_2']
 #        self.sign='@'
 
     def spawn(self,tile):
         tile.setChar(self)
+        self.tile=tile
 
     def onTouch(self):
         core.app['print'](u'Иди на хрен, мальчик!')
@@ -133,11 +134,17 @@ class NPC(Char):
     def makeAlive(self):
         print 'ololo'
 
+    def move(self,d):
+        if self.tile.get(d).onCome():
+            self.tile.setChar()
+            self.tile = self.tile.get(d)
+            self.tile.setChar(self)
+
 
 class Hero(NPC):
     def __init__(self,*args,**kwargs):
         NPC.__init__(self,*args,**kwargs)
-        self.sign='tilesets/cutted/char/9_10.png'
+        self.sign=TILESET['char_9_10']
 
 import threading, time
 class Stream(QThread):

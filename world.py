@@ -1,20 +1,59 @@
 # -*- coding: utf-8 -*-
 __author__ = 'averrin'
+import Image
 
 
-TILESET={
-         0:'tilesets/cutted/1/3_0.png',
-         1:'tilesets/cutted/1/3_13.png',
-         2:'tilesets/cutted/1/1_14.png',
-         3:'tilesets/cutted/1/1_14.png',
+
+
+class Tileset(dict):
+    def __init__(self,dir):
+        self.dir=dir
+        self.signs={
+         0:'1_3_0',
+         1:'1_3_13',
+         2:'1_1_14',
+         3:'1_1_14',
          'none':' ',
-         'door_closed_v':'tilesets/cutted/2/2_10.png',
-         'door_open_v':'tilesets/cutted/1/0_18.png',
-         'door_closed_h':'tilesets/cutted/2/2_10.png',
-         'door_open_h':'tilesets/cutted/1/0_18.png',
-         'window_v':'tilesets/cutted/1/1_20.png',
-         'window_h':'tilesets/cutted/1/1_20.png',
+         'door_closed_v':'2_2_10',
+         'door_open_v':'1_0_18',
+         'door_closed_h':'2_2_10',
+         'door_open_h':'1_0_18',
+         'window_v':'1_1_20',
+         'window_h':'1_1_20',
         }
+        self.load()
+
+    def load(self):
+        infile=['tilesets/%s/%s.bmp' % (self.dir,i) for i in xrange(3)]
+        for i,fname in enumerate(infile):
+            try:
+                im = Image.open(fname)
+                xsize,ysize=im.size
+                for row in xrange(31):
+                    for col in xrange(7):
+                        box = ((xsize/8)*col ,(ysize/32)*row, (xsize/8)*(col+1), (ysize/32)*(row+1))
+                        region = im.crop(box)
+                        region.save('tilesets/.temp/%d_%d_%d.png' % (i,col,row), "png")
+            except Exception,e:
+                print e
+        try:
+            im = Image.open('tilesets/%s/chars.png'%self.dir)
+            xsize,ysize=im.size
+            for row in xrange(31):
+                for col in xrange(15):
+                    box = ((xsize/32)*col ,(ysize/16)*row, (xsize/32)*(col+1), (ysize/16)*(row+1))
+                    region = im.crop(box)
+                    region.save('tilesets/.temp/char_%d_%d.png' % (col,row), "png")
+        except Exception,e:
+            print e
+
+    def __getitem__(self, item):
+        try:
+            return 'tilesets/.temp/%s.png' % self.signs[item]
+        except:
+            return 'tilesets/.temp/%s.png' % item
+
+TILESET=Tileset('default')
 
 class Tile(object):
     def __init__(self,x=0,y=0,type='none'):
@@ -82,7 +121,7 @@ class Tile(object):
 #        return '(%s,%s)' % (str(self.x).zfill(2),str(self.y).zfill(2))
 
     def info(self):
-        return type(self), self.type, self.char, self.__str__()
+        return self.__class__.__name__, self.type, self.char.Name if self.char else '', self.__str__()
 
 class Wall(Tile):
     def __init__(self,x=0,y=0,type='v'):

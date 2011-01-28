@@ -3,7 +3,7 @@ __author__ = 'averrin'
 import sys
 import Image
 
-infile=['tilesets/origin/mchip0.bmp','tilesets/origin/mchip1.bmp','tilesets/origin/mchip2.bmp','tilesets/origin/mchip3.bmp',]
+infile=['tilesets/origin/0.bmp','tilesets/origin/1.bmp','tilesets/origin/2.bmp','tilesets/origin/3.bmp',]
 for i,fname in enumerate(infile):
     try:
         im = Image.open(fname)
@@ -16,7 +16,7 @@ for i,fname in enumerate(infile):
     except Exception,e:
         print e
 try:
-    im = Image.open('tilesets/chara_a.png')
+    im = Image.open('tilesets/chars.png')
     xsize,ysize=im.size
     for row in xrange(31):
         for col in xrange(15):
