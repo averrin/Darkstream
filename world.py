@@ -3,21 +3,21 @@ __author__ = 'averrin'
 
 
 TILESET={
-         0:'<span style="color:#111;">.</span>',
-#         0:'<img src="tilesets/cutted/1/5_20.png" height=12>',
-         1:'▉',
-#         1:'<img src="tilesets/cutted/1/3_13.png" height=12>',
-#         2:'<img src="tilesets/cutted/1/1_14.png" height=12>',
-         2:'■',
-         3:'■',
+#         0:'<span style="color:#111;">.</span>',
+         0:'tilesets/cutted/1/3_0.png',
+#         1:'▉',
+         1:'tilesets/cutted/1/3_13.png',
+         2:'tilesets/cutted/1/1_14.png',
+#         2:'■',
+         3:'tilesets/cutted/1/1_14.png',
          'none':' ',
          'hero':'<span style="color:green;">◐</span>',
-         'door_closed_v':'|',
-         'door_open_v':'/',
-         'door_closed_h':'-',
-         'door_open_h':'/',
-         'window_v':'<span style="color:blue;">‖</span>',
-         'window_h':'<span style="color:blue;">=</span>',
+         'door_closed_v':'tilesets/cutted/2/2_10.png',
+         'door_open_v':'tilesets/cutted/1/0_18.png',
+         'door_closed_h':'tilesets/cutted/2/2_10.png',
+         'door_open_h':'tilesets/cutted/1/0_18.png',
+         'window_v':'tilesets/cutted/1/1_20.png',
+         'window_h':'tilesets/cutted/1/1_20.png',
         }
 
 class Tile(object):
@@ -57,12 +57,13 @@ class Tile(object):
             self.onCharEnter()
             char.coord=(self.x,self.y)
             char.tile=self
+        else:
             self.onCharLeave()
 
     def onCharEnter(self):
-        pass
+        self.stage.core.drawTile(self)
     def onCharLeave(self):
-        pass
+        self.stage.core.drawTile(self)
 
     def __str__(self):
         if self.char:
@@ -107,16 +108,21 @@ class Door(Tile):
                 self.type={'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed]
             else:
                 self.stage.core.app['print'](u'Заперто!')
+
+            self.stage.core.drawTile(self)
             return False
         else:
+            self.stage.core.drawTile(self)
             return True
 
     def onCharLeave(self):
+        Tile.onCharLeave(self)
         self.close()
 
     def close(self):
         self.closed=True
         self.type={'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed]
+        self.stage.core.drawTile(self)
 
 
 
@@ -237,7 +243,7 @@ class Room(list):
 
 
 def main():
-    stage=Matrix(16,35,room=True)
+    stage=Matrix(16,30,room=True)
 #    stage.set(6,4,Tile(type='hero'))
     stage.addVWall(6)
     stage.addVWall(8,end=15)

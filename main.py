@@ -70,7 +70,7 @@ class Springstone(QMainWindow,App):
         self.trayIconMenu = QMenu(self)
         App.__init__(self,*args,**kwargs)
         self.connect(self.trayIcon, SIGNAL('activated(QSystemTrayIcon::ActivationReason)'), self['toggle'])
-        self.connect(self.textBrowser,SIGNAL('anchorClicked'),self.m_echo)
+#        self.connect(self.textBrowser,SIGNAL('anchorClicked'),self.m_echo)
         self.trayIcon.setContextMenu(self.trayIconMenu)
         self.trayIcon.setIcon(QIcon(self.trayIconPixmap))
         self.resize(QSize(int(self.options['width']),int(self.options['height'])))
@@ -82,8 +82,13 @@ class Springstone(QMainWindow,App):
         self.toolBar.setMovable(False)
         self.pb=''
         self.mayhide=eval(self.options['hide'])
-        self.textBrowser.setFont(QFont('Monospace'))
+#        self.textBrowser.setFont(QFont('Monospace'))
 #        self.textBrowser.setFontPointSize(18)
+
+
+        self.scene = QGraphicsScene()
+        self.graphicsView.setScene(self.scene)
+
 
         sm=SettingsManager(self)
         sm.setWindowIcon(QIcon(icons['configure']))
@@ -96,7 +101,8 @@ class Springstone(QMainWindow,App):
         self.connect(self.debugLine, SIGNAL("returnPressed()"),self.command)
 
         self.mainList.setIconSize(QSize(int(self.options['mlicon_size']),int(self.options['mlicon_size'])))
-#        self.connect(self.mainList, SIGNAL("itemClicked(QListWidgetItem *)"), self.itemClicked)
+        self.connect(self.scene, SIGNAL("pressed"), self['print'])
+        self.connect(self.graphicsView, SIGNAL("pressed"), self['print'])
         self.connect(self.mainList, SIGNAL("itemDoubleClicked(QListWidgetItem *)"), self.itemDoubleClicked)
 
         self['info']('Application initialized')
@@ -137,16 +143,18 @@ class Springstone(QMainWindow,App):
 
     def m_echo(self,msg):
         dialog={'Darkstream':'Hello, kitty!','boom':'oops'}
-        try:
-            msg=str(msg.path())
-            self.textBrowser.append(dialog[msg])
-        except:
-            self.textBrowser.append(msg)
-        print msg
+#        try:
+#            msg=str(msg.path())
+#            self.textBrowser.append(dialog[msg])
+#        except:
+#            self.textBrowser.append(msg)
+#        print msg
 
     def m_setText(self,msg):
-        self.textBrowser.clear()
-        self.textBrowser.setHtml(str(msg).decode('utf-8').replace('\n','<br>'))
+#        self.textBrowser.clear()
+#        self.textBrowser.setHtml(str(msg).decode('utf-8').replace('\n','<br>'))
+#        print msg
+        pass
 
     def m_createLoginWindow(self,uifile):
         window=QMainWindow()
@@ -430,7 +438,20 @@ class Springstone(QMainWindow,App):
         #TODO: fix exit stack
 #        self.core.stopServer()
 
+    def m_drawImage(self,img,x,y):
+        item=QGraphicsPixmapItem(QPixmap(img))
+        self.scene.addItem(item)
+        item.setY(x)
+        item.setX(y)
+        return item
 
+
+    def m_drawText(self,text,x,y):
+        item=QGraphicsTextItem(text)
+        self.scene.addItem(item)
+        item.setY(x)
+        item.setX(y)
+        return item
 
 import threading
 class ItemWorker(threading.Thread):
@@ -464,8 +485,8 @@ def main():
 
     app.show()
 #    app.textBrowser.setOpenLinks(False)
-    app.textBrowser.setSource=app.m_echo
-    app.textBrowser.setStyleSheet("QWidget {line-height: 0 !important;}")
+#    app.textBrowser.setSource=app.m_echo
+#    app.textBrowser.setStyleSheet("QWidget {line-height: 0 !important;}")
 #    app.api.echo('<style>a { color: green; } a:visited { color: red; }</style>')
     app.api.echo('Welcome to <a href="Darkstream" class="link">Darkstream</a>.')
     app.api.echo('TODO: full-functionality UI')

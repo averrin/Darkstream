@@ -42,6 +42,7 @@ class Core(object):
         self.app.threads_.append(self.stream)
         self.app.statusbar.showMessage(str('wtf?'))
         self.stream.start()
+        self.draw(self.stage)
         self.hero=Hero()
         self.h=self.stage[4][6]
         self.hero.spawn(self.h)
@@ -55,7 +56,9 @@ class Core(object):
 #        print '#',msg
 
     def m_redraw(self):
-        self.app['setText'](self.stage)
+        pass
+#        self.app.scene.clear()
+#        self.draw(self.stage)
 
     def m_w(self):
         self.m_move('w')
@@ -69,11 +72,29 @@ class Core(object):
     def m_s(self):
         self.m_move('s')
 
+    def draw(self,stage):
+        for row in stage:
+            for tile in row:
+                if len(str(tile))>1:
+                    tile.item=self.app['drawImage'](str(tile),tile.y*32,tile.x*32)
+#                    coord.setY=tile.y*32
+#                    coord.setX=tile.x*32
+                else:
+                    tile.item=self.app['drawImage'](str(tile),tile.y*32,tile.x*32)
+#                    tile.item=self.app['drawText'](str(tile),tile.y*32,tile.x*32)
+        self.coord=self.app.scene.addText('')
+        self.coord.setHtml('<span style="color: green">boom</span>')
+
+    def drawTile(self,tile):
+        try:
+            tile.item.setPixmap(QPixmap(str(tile)))
+        except:
+            self.app['drawText'](str(tile),tile.y*32,tile.x*32)
+
 
     def m_move(self,d):
         if self.h.get(d).onCome():
 #            self.m_redraw()
-#            self.h.type=self.floor
             self.h.setChar()
             self.h = self.h.get(d)
 #            self.floor=self.h.type
@@ -87,9 +108,10 @@ class Core(object):
 
 class NPC(Char):
     def __init__(self,*args,**kwargs):
-       Char.__init__(self,*args,**kwargs)
-       self.coord=(0,0)
-       self.sign='<span style="color:yellow;">◐</span>'
+        Char.__init__(self,*args,**kwargs)
+        self.coord=(0,0)
+        self.sign='tilesets/cutted/char/9_2.png'
+#        self.sign='@'
 
     def spawn(self,tile):
         tile.setChar(self)
@@ -101,7 +123,7 @@ class NPC(Char):
 class Hero(NPC):
     def __init__(self,*args,**kwargs):
         NPC.__init__(self,*args,**kwargs)
-        self.sign='<span style="color:green;">◐</span>'
+        self.sign='tilesets/cutted/char/9_10.png'
 
 import threading, time
 class Stream(QThread):
