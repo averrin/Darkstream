@@ -26,10 +26,15 @@ class Tile(object):
         self.gdesc=''
         self.sign=''
         self.char=''
+        self.foreground=TILESET[self.type]
+        self.background=TILESET[self.type]
+
+    def chType(self,type):
+        self.type=type
+        self.foreground=TILESET[self.type]
         self.background=TILESET[self.type]
 
     def getBackground(self):
-        self.background=TILESET[self.type]
         return self.background
 
     def get(self,d):
@@ -71,7 +76,7 @@ class Tile(object):
         if self.char:
             return self.char.sign
         if not self.sign:
-            return self.getBackground()
+            return self.foreground
         else:
             return self.sign
 #        return '(%s,%s)' % (str(self.x).zfill(2),str(self.y).zfill(2))
@@ -82,6 +87,7 @@ class Tile(object):
 class Wall(Tile):
     def __init__(self,x=0,y=0,type='v'):
         Tile.__init__(self,x,y,{'h':1,'v':2}[type])
+        self.background=TILESET[self.type]
 
     def onCome(self):
         return False
@@ -90,6 +96,7 @@ class Wall(Tile):
 class Window(Tile):
     def __init__(self,x=0,y=0,type='v'):
         Tile.__init__(self,x,y,{'h':'window_h','v':'window_v'}[type])
+        self.background=TILESET[self.type]
 
     def onCome(self):
         self.stage.core.app['print'](u'Ухты-йопты, окно!')
@@ -101,6 +108,7 @@ class Door(Tile):
         self.locked=locked
         self.d=type
         Tile.__init__(self,x,y,{'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][closed])
+        self.background=TILESET['door_open_h']
 
 
     def onCome(self):
@@ -110,7 +118,7 @@ class Door(Tile):
         if self.closed:
             if not self.locked:
                 self.closed=False
-                self.type={'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed]
+                self.chType({'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed])
             else:
                 self.stage.core.app['print'](u'Заперто!')
 
@@ -126,7 +134,7 @@ class Door(Tile):
 
     def close(self):
         self.closed=True
-        self.type={'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed]
+        self.chType({'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed])
         self.stage.core.drawTile(self)
 
 
@@ -150,7 +158,7 @@ class Matrix(list):
                         row[-1]=Wall(c,i,'v')
                 else:
                     for ii,t in enumerate(row):
-                        t.type=0
+                        t.chType(0)
                     row[0]=Wall(c,i,'h')
                     row[-1]=Wall(c,i,'h')
 
@@ -204,7 +212,7 @@ class Matrix(list):
                 for t in row:
                     if t.x in range(tl[0],br[0]):
                         if type in TILESET:
-                            t.type=type
+                            t.chType(type)
                         else:
                             t.sign=type
 

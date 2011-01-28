@@ -77,13 +77,7 @@ class Core(object):
         for row in stage:
             row[0].x=0
             for tile in row:
-                if len(str(tile))>1:
-                    tile.item=self.app['drawImage'](str(tile),tile.y*32,tile.x*32)
-                    tile.item.tile=tile
-#                    coord.setY=tile.y*32
-#                    coord.setX=tile.x*32
-                else:
-                    tile.item=self.app['drawImage'](str(tile),tile.y*32,tile.x*32)
+                self.drawTile(tile)
 #                    tile.item=self.app['drawText'](str(tile),tile.y*32,tile.x*32)
         self.app.coord=self.app.scene.addText('')
 
