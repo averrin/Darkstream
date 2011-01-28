@@ -3,15 +3,11 @@ __author__ = 'averrin'
 
 
 TILESET={
-#         0:'<span style="color:#111;">.</span>',
          0:'tilesets/cutted/1/3_0.png',
-#         1:'▉',
          1:'tilesets/cutted/1/3_13.png',
          2:'tilesets/cutted/1/1_14.png',
-#         2:'■',
          3:'tilesets/cutted/1/1_14.png',
          'none':' ',
-         'hero':'<span style="color:green;">◐</span>',
          'door_closed_v':'tilesets/cutted/2/2_10.png',
          'door_open_v':'tilesets/cutted/1/0_18.png',
          'door_closed_h':'tilesets/cutted/2/2_10.png',

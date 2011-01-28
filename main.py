@@ -88,6 +88,9 @@ class Springstone(QMainWindow,App):
 
         self.scene = QGraphicsScene()
         self.graphicsView.setScene(self.scene)
+        self.graphicsView.mousePressEvent=self.mousePressEvent
+        self.graphicsView.mouseReleaseEvent=self.mouseReleaseEvent
+        self.graphicsView.mouseMoveEvent=self.mouseMoveEvent
 
 
         sm=SettingsManager(self)
@@ -452,6 +455,31 @@ class Springstone(QMainWindow,App):
         item.setY(x)
         item.setX(y)
         return item
+
+
+
+    def mousePressEvent(self, ev):
+        if ev.buttons() == Qt.LeftButton:
+            QGraphicsView.mousePressEvent(self.graphicsView, ev)
+        self.mouse = [ev.pos().x(), ev.pos().y()]
+
+    def mouseReleaseEvent(self, ev):
+        if ev.button() == Qt.LeftButton:
+            QGraphicsView.mouseReleaseEvent(self.graphicsView, ev)
+
+    def mouseMoveEvent(self, ev):
+#        if ev.buttons() == QtCore.Qt.LeftButton:
+#            QtGui.QGraphicsView.mouseMoveEvent(self, ev)
+#        if ev.buttons() in [QtCore.Qt.RightButton, QtCore.Qt.LeftButton]:
+#            m = self.matrix()
+#            m.translate(ev.pos().x()-self.mouse[0], ev.pos().y()-self.mouse[1])
+#            self.setMatrix(m)
+        self.mouse = [ev.pos().x(), ev.pos().y()]
+        try:
+            item=str(self.scene.itemAt(self.mouse[0],self.mouse[1]).tile)
+            self.coord.setHtml('<span style="color:green;background:black;">%d,%d -- %s</span>'%(self.mouse[0],self.mouse[1],item))
+        except:
+            pass
 
 import threading
 class ItemWorker(threading.Thread):

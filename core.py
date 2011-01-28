@@ -35,6 +35,7 @@ class Core(object):
         self.app['print'](u'Пожалуй сначала функционал, а уже потом рюшечки.')
         self.floor=0
         self.app.connect(self.app, SIGNAL('time'), self.stream)
+        self.app.connect(self.app, SIGNAL('track'), self.track)
         self.app.connect(self.app, SIGNAL('redraw'), self.app['redraw'])
         self.stream=Stream()
         self.stream.core=self
@@ -74,16 +75,17 @@ class Core(object):
 
     def draw(self,stage):
         for row in stage:
+            row[0].x=0
             for tile in row:
                 if len(str(tile))>1:
                     tile.item=self.app['drawImage'](str(tile),tile.y*32,tile.x*32)
+                    tile.item.tile=tile
 #                    coord.setY=tile.y*32
 #                    coord.setX=tile.x*32
                 else:
                     tile.item=self.app['drawImage'](str(tile),tile.y*32,tile.x*32)
 #                    tile.item=self.app['drawText'](str(tile),tile.y*32,tile.x*32)
-        self.coord=self.app.scene.addText('')
-        self.coord.setHtml('<span style="color: green">boom</span>')
+        self.app.coord=self.app.scene.addText('')
 
     def drawTile(self,tile):
         try:
@@ -105,6 +107,14 @@ class Core(object):
 
     def m_itemClicked(self,item):
         pass
+
+    def track(self):
+        currentPos = QCursor.pos()
+        x = currentPos.x()
+        y = currentPos.y()
+        item=str(self.app.scene.itemAt(x,y).type)
+        self.app.coord.setHtml('<span style="color:green">%d,%d -- %s</span>'%(x,y,item))
+#        pass
 
 class NPC(Char):
     def __init__(self,*args,**kwargs):
@@ -148,6 +158,8 @@ class Stream(QThread):
             self.app.emit(SIGNAL('redraw'))
             self.app.emit(SIGNAL('time'),str(self.i))
             self.i+=1
+
+#            self.app.emit(SIGNAL('track'))
 #        while self.Trig:
 #            for n in xrange(self.wait_range):
 #                if self.Trig:
