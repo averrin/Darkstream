@@ -46,10 +46,10 @@ class Core(object):
         self.app.statusbar.showMessage(str('wtf?'))
         self.stream.start()
         self.draw(self.stage)
-        self.hero=Hero()
+        self.hero=Hero(chset=10)
         self.h=self.stage[4][6]
         self.hero.spawn(self.h)
-        kiro=NPC()
+        kiro=NPC(chset=9)
         kiro.spawn(self.stage[5][12])
 
     def stream(self,*args):
@@ -94,8 +94,9 @@ class Core(object):
                 ang=random.randint(0,5)*90
                 trans=QTransform()
 #                pm=pm.transformed(trans.rotate(ang))
-            mask=pm.createHeuristicMask()
-            pm.setMask(mask)
+            if tile.type or (not tile.type and tile.char):
+                mask=pm.createHeuristicMask()
+                pm.setMask(mask)
             tile.item.setPixmap(pm)
             tile.item.update()
         except Exception,e:
@@ -118,11 +119,16 @@ class Core(object):
 #        pass
 
 class NPC(Char):
-    def __init__(self,*args,**kwargs):
+    def __init__(self,chset,*args,**kwargs):
         Char.__init__(self,*args,**kwargs)
         self.coord=(0,0)
-        self.sign=TILESET['char_9_2']
-#        self.sign='@'
+        self.signs={
+                    's':TILESET['char_%s_2'%chset],
+                    'n':TILESET['char_%s_0'%chset],
+                    'e':TILESET['char_%s_1'%chset],
+                    'w':TILESET['char_%s_3'%chset],
+                    }
+        self.sign=self.signs['s']
 
     def spawn(self,tile):
         tile.setChar(self)
@@ -135,6 +141,7 @@ class NPC(Char):
         print 'ololo'
 
     def move(self,d):
+        self.sign=self.signs[d]
         if self.tile.get(d).onCome():
             self.tile.setChar()
             self.tile = self.tile.get(d)
@@ -144,7 +151,6 @@ class NPC(Char):
 class Hero(NPC):
     def __init__(self,*args,**kwargs):
         NPC.__init__(self,*args,**kwargs)
-        self.sign=TILESET['char_9_10']
 
 import threading, time
 class Stream(QThread):
