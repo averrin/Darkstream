@@ -89,9 +89,16 @@ class Core(object):
 
     def drawTile(self,tile):
         try:
-            tile.item.setPixmap(QPixmap(str(tile)))
-        except:
-            self.app['drawText'](str(tile),tile.y*32,tile.x*32)
+            bg=self.app['drawImage'](tile.getBackground(),tile.y*32,tile.x*32)
+            pm=str(tile)
+            tile.item=self.app['drawImage'](pm,tile.y*32,tile.x*32)
+            pm=QPixmap(pm)
+            mask=pm.createHeuristicMask()
+            pm.setMask(mask)
+            tile.item.setPixmap(pm)
+            tile.item.update()
+        except Exception,e:
+            print e
 
 
     def m_move(self,d):
@@ -128,6 +135,9 @@ class NPC(Char):
 
     def onTouch(self):
         core.app['print'](u'Иди на хрен, мальчик!')
+
+    def makeAlive(self):
+        print 'ololo'
 
 
 class Hero(NPC):

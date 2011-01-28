@@ -26,6 +26,11 @@ class Tile(object):
         self.gdesc=''
         self.sign=''
         self.char=''
+        self.background=TILESET[self.type]
+
+    def getBackground(self):
+        self.background=TILESET[self.type]
+        return self.background
 
     def get(self,d):
         WORLD=self.stage
@@ -53,6 +58,7 @@ class Tile(object):
             self.onCharEnter()
             char.coord=(self.x,self.y)
             char.tile=self
+            self.stage.core.drawTile(self)
         else:
             self.onCharLeave()
 
@@ -65,10 +71,13 @@ class Tile(object):
         if self.char:
             return self.char.sign
         if not self.sign:
-            return TILESET[self.type]
+            return self.getBackground()
         else:
             return self.sign
 #        return '(%s,%s)' % (str(self.x).zfill(2),str(self.y).zfill(2))
+
+    def info(self):
+        return type(self), self.type, self.char, self.__str__()
 
 class Wall(Tile):
     def __init__(self,x=0,y=0,type='v'):

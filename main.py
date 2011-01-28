@@ -91,6 +91,8 @@ class Springstone(QMainWindow,App):
         self.graphicsView.mousePressEvent=self.mousePressEvent
         self.graphicsView.mouseReleaseEvent=self.mouseReleaseEvent
         self.graphicsView.mouseMoveEvent=self.mouseMoveEvent
+        screen = QDesktopWidget().screenGeometry()
+        QMainWindow.setGeometry(self,0, 0, screen.width(), screen.height())
 
 
         sm=SettingsManager(self)
@@ -442,7 +444,12 @@ class Springstone(QMainWindow,App):
 #        self.core.stopServer()
 
     def m_drawImage(self,img,x,y):
-        item=QGraphicsPixmapItem(QPixmap(img))
+        pm=QPixmap(img)
+#        mask=pm.createMaskFromColor(QColor('#082152'))
+        mask=pm.createHeuristicMask()
+        pm.setMask(mask)
+#        pm.setAlphaChannel(mask)
+        item=QGraphicsPixmapItem(pm)
         self.scene.addItem(item)
         item.setY(x)
         item.setX(y)
@@ -476,7 +483,7 @@ class Springstone(QMainWindow,App):
 #            self.setMatrix(m)
         self.mouse = [ev.pos().x(), ev.pos().y()]
         try:
-            item=str(self.scene.itemAt(self.mouse[0],self.mouse[1]).tile)
+            item=self.scene.itemAt(self.mouse[0],self.mouse[1]).tile.info()
             self.coord.setHtml('<span style="color:green;background:black;">%d,%d -- %s</span>'%(self.mouse[0],self.mouse[1],item))
         except:
             pass

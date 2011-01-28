@@ -16,7 +16,7 @@ for i,fname in enumerate(infile):
     except Exception,e:
         print e
 try:
-    im = Image.open('tilesets/chara.png')
+    im = Image.open('tilesets/chara_a.png')
     xsize,ysize=im.size
     for row in xrange(31):
         for col in xrange(15):

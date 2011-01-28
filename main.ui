@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1120</width>
-    <height>695</height>
+    <width>926</width>
+    <height>616</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,6 +25,9 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+      <property name="resizeAnchor">
+       <enum>QGraphicsView::AnchorUnderMouse</enum>
       </property>
      </widget>
     </item>
