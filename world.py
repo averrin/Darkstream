@@ -122,19 +122,19 @@ class Tile(object):
         if char:
             self.char=char
             self.layers.append(char.sign)
-            self.onCharEnter()
+            self.onCharEnter(char)
             char.coord=(self.x,self.y)
             char.tile=self
         else:
             self.layers.remove(self.layers[-1])
-            self.onCharLeave()
+            self.onCharLeave(self.char)
             self.char=char
 #        print 'char added',self.layers, self.items
         self.stage.core.drawTile(self)
 
-    def onCharEnter(self):
+    def onCharEnter(self,char):
         self.stage.core.drawTile(self)
-    def onCharLeave(self):
+    def onCharLeave(self,char):
         self.stage.core.drawTile(self)
 
     def __str__(self):
@@ -146,7 +146,7 @@ class Tile(object):
 class Wall(Tile):
     def __init__(self,x=0,y=0,type='v'):
         try:
-            Tile.__init__(self,x,y,{'h':1,'v':2}[type])
+            Tile.__init__(self,x,y,{'h':2,'v':1}[type])
         except:
             Tile.__init__(self,x,y,type)
         self.chType(self.type)
@@ -164,18 +164,18 @@ class InternalWall(Tile):
         self.chType(self.type,False)
 
     def onCome(self,char):
-        if (self.type==2 and char.tile.type!=10) or (self.type==10 and char.tile.type!=2):
+        if (self.type==2 and char.tile.type!=10) or (self.type==10 and char.tile.type!=2): #FIXMe: near walls
             return True
         else:
             return False
 
 
-    def onCharEnter(self):
+    def onCharEnter(self,char):
         if self.type==2:
             self.char.sign.trans=128
         self.stage.core.drawTile(self)
-    def onCharLeave(self):
-        self.char.sign.trans=0
+    def onCharLeave(self,char):
+        self.char.sign.trans=0 #Transparency bug still happens
         self.stage.core.drawTile(self)
 
 
@@ -220,8 +220,8 @@ class Door(Tile):
             self.stage.core.drawTile(self)
             return True
 
-    def onCharLeave(self):
-        Tile.onCharLeave(self)
+    def onCharLeave(self,char):
+        Tile.onCharLeave(self,self.char)
         self.close()
 
     def close(self):
@@ -245,14 +245,15 @@ class Matrix(list):
             for i,row in enumerate(self):
                 if not i or i == self.rows-1:
                     for c,t in enumerate(row):
-                        row[c]=Wall(c,i,'v')
+                        row[c]=Wall(c,i,'h')
+                        #implement internalwall
                         try:
-                            self[i+1][c].chType(10,False)
+#                            self[i+1][c].chType(10,False)
+                            self.addHWall(i)
                         except:
                             self.addRow()
-                            self[i+1][c].chType(10,False)
-#                        row[0]=Wall(c,i,'v')
-#                        row[-1]=Wall(c,i,'v')
+                            self.addHWall(i)
+#                            self[i+1][c].chType(10,False)
                     if not i:
                         row[0].chType(3)
                         row[-1].chType(4)
@@ -267,9 +268,8 @@ class Matrix(list):
                         if t.type=='none':
                             t.chType(0,False)
                     if i!=self.rows:
-#                        print i,self.rows
-                        row[0]=Wall(c,i,'h')
-                        row[-1]=Wall(c,i,'h')
+                        row[0]=Wall(c,i,'v')
+                        row[-1]=Wall(c,i,'v')
 
     def getList(self):
         __list=[]
@@ -305,7 +305,7 @@ class Matrix(list):
             end=self.rows-1
         for i,row in enumerate(self):
             if i in range(start,end) and i!=0 and i!=self.rows-1:
-                row[x]=Wall(row[x].x,row[i].y,'h')
+                row[x]=Wall(row[x].x,row[i].y,'v')
             elif not i:
                 row[x].chType(9)
             elif i==self.rows-1:
