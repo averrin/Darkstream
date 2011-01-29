@@ -5,7 +5,7 @@ import uuid
 from PyQt4.QtGui import *
 import json
 import world
-from world import TILESET
+from world import TILESET,Layer
 #import game
 from rpgbase import *
 from PyQt4.QtCore import *
@@ -90,18 +90,8 @@ class Core(object):
                 tile.items.remove(item)
             for index,layer in enumerate(tile.layers):
                 item=self.app['drawImage'](layer,tile.y*32,tile.x*32)
-#                print item.x() ,item.y()
                 tile.items.append(item)
                 item.tile=tile
-#                pm=QPixmap(layer)
-#                print index
-#                if index and layer.alpha:
-#                    mask=pm.createHeuristicMask()
-#                    pm.setMask(mask)
-#                tile.items[index].setPixmap(pm)
-#                tile.items[index].update()
-
-#            print '---'
         except Exception,e:
             print e
 
@@ -126,10 +116,10 @@ class NPC(Char):
         Char.__init__(self,*args,**kwargs)
         self.coord=(0,0)
         self.signs={
-                    's':TILESET['char_%s_2'%chset],
-                    'n':TILESET['char_%s_0'%chset],
-                    'e':TILESET['char_%s_1'%chset],
-                    'w':TILESET['char_%s_3'%chset],
+                    's':Layer(TILESET['char_%s_2'%chset]),
+                    'n':Layer(TILESET['char_%s_0'%chset]),
+                    'e':Layer(TILESET['char_%s_1'%chset]),
+                    'w':Layer(TILESET['char_%s_3'%chset]),
                     }
         self.sign=self.signs['s']
 
@@ -145,7 +135,7 @@ class NPC(Char):
 
     def move(self,d):
         self.sign=self.signs[d]
-        if self.tile.get(d).onCome():
+        if self.tile.get(d).onCome(self):
             self.tile.setChar()
             self.tile = self.tile.get(d)
             self.tile.setChar(self)

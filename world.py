@@ -67,9 +67,10 @@ class Tileset(dict):
 TILESET=Tileset('default')
 
 class Layer(object):
-    def __init__(self,type,alpha=True):
+    def __init__(self,type,alpha=True,trans=0):
         self.alpha=alpha
         self.type=type
+        self.trans=trans
 
     def __str__(self):
         return self.type
@@ -110,7 +111,7 @@ class Tile(object):
         else:
             return ''
 
-    def onCome(self):
+    def onCome(self,char):
         if not self.char:
             return True
         else:
@@ -118,15 +119,16 @@ class Tile(object):
             return False
 
     def setChar(self,char=''):
-        self.char=char
         if char:
-            self.layers.append(Layer(char.sign))
+            self.char=char
+            self.layers.append(char.sign)
             self.onCharEnter()
             char.coord=(self.x,self.y)
             char.tile=self
         else:
             self.layers.remove(self.layers[-1])
             self.onCharLeave()
+            self.char=char
 #        print 'char added',self.layers, self.items
         self.stage.core.drawTile(self)
 
@@ -149,8 +151,33 @@ class Wall(Tile):
             Tile.__init__(self,x,y,type)
         self.chType(self.type)
 
-    def onCome(self):
+    def onCome(self,char):
         return False
+
+class InternalWall(Tile):
+    def __init__(self,x=0,y=0,type='up'):
+        if type=='up':
+            self.type=2
+        else:
+            self.type=10
+        Tile.__init__(self,x,y,self.type)
+        self.chType(self.type,False)
+
+    def onCome(self,char):
+        if (self.type==2 and char.tile.type!=10) or (self.type==10 and char.tile.type!=2):
+            return True
+        else:
+            return False
+
+
+    def onCharEnter(self):
+        if self.type==2:
+            self.char.sign.trans=128
+        self.stage.core.drawTile(self)
+    def onCharLeave(self):
+        self.char.sign.trans=0
+        self.stage.core.drawTile(self)
+
 
 
 class Window(Tile):
@@ -159,7 +186,7 @@ class Window(Tile):
 #        self.layers[0]=TILESET[self.type]
         self.chType(self.type)
 
-    def onCome(self):
+    def onCome(self,char):
         self.stage.core.app['print'](u'Ухты-йопты, окно!')
         if self.type=='v':
             return False
@@ -176,7 +203,7 @@ class Door(Tile):
         if closed:
             self.chType({'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed])
 
-    def onCome(self):
+    def onCome(self,char):
         return self.open()
 
     def open(self):
@@ -290,8 +317,9 @@ class Matrix(list):
         row=self[y]
         for i,t in enumerate(row):
             if i in range(start,end) and i!=0 and i!=self.columns-1:
-                row[i]=Wall(t.x,t.y,'v')
-                self[y+1][i].chType(10,False)
+                self.set(t.x,t.y,InternalWall(type='up'))
+                self.set(t.x,t.y+1,InternalWall(type='down'))
+#                self[y+1][i]=InternalWall(t.x,t.y+1,'down')
 
 
     def fillArea(self,tl,br,type):
@@ -361,6 +389,7 @@ def main():
 #    stage.set(15,4,Door(type='v'))
 #    stage.set(15,4,Wall(type=13))
     stage.addPass(15,4)
+    stage.addPass(15,7)
 #    stage.set(15,7,Door(type='v',closed=True))
     stage.set(3,7,Door(type='h'))
     stage.set(18,7,Door(type='h',closed=True))
