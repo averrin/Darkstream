@@ -65,14 +65,15 @@ class Tile(object):
         self.gdesc=''
         self.sign=''
         self.char=''
-        self.layers=[TILESET[self.type]]
+        self.layers=[]
         self.items=[]
-#        self.foreground=TILESET[self.type]
-#        self.background=TILESET[self.type]
 
     def chType(self,type):
+#        if self.type=='none':
+#            self.layers[0]=TILESET[type]
+#        else:
+        self.layers.append(TILESET[type])
         self.type=type
-        self.layers.append(TILESET[self.type])
 
     def getBackground(self):
         return self.layers[0]
@@ -104,10 +105,11 @@ class Tile(object):
             self.onCharEnter()
             char.coord=(self.x,self.y)
             char.tile=self
-            self.stage.core.drawTile(self)
         else:
             self.layers.remove(self.layers[-1])
             self.onCharLeave()
+#        print 'char added',self.layers, self.items
+        self.stage.core.drawTile(self)
 
     def onCharEnter(self):
         self.stage.core.drawTile(self)
@@ -115,21 +117,15 @@ class Tile(object):
         self.stage.core.drawTile(self)
 
     def __str__(self):
-        if self.char:
-            return self.char.sign
-        if not self.sign:
-            return self.foreground
-        else:
-            return self.sign
-#        return '(%s,%s)' % (str(self.x).zfill(2),str(self.y).zfill(2))
+        return self.layers
 
     def info(self):
-        return self.__class__.__name__, self.type, self.char.Name if self.char else '', self.__str__()
+        return self.__class__.__name__, self.type, self.char.Name if self.char else '', self.__str__(), 'items:',len(self.items)
 
 class Wall(Tile):
     def __init__(self,x=0,y=0,type='v'):
         Tile.__init__(self,x,y,{'h':1,'v':2}[type])
-        self.layers[0]=TILESET[self.type]
+        self.chType(self.type)
 
     def onCome(self):
         return False
@@ -138,7 +134,8 @@ class Wall(Tile):
 class Window(Tile):
     def __init__(self,x=0,y=0,type='v'):
         Tile.__init__(self,x,y,{'h':'window_h','v':'window_v'}[type])
-        self.layers[0]=TILESET[self.type]
+#        self.layers[0]=TILESET[self.type]
+        self.chType(self.type)
 
     def onCome(self):
         self.stage.core.app['print'](u'Ухты-йопты, окно!')
@@ -151,7 +148,8 @@ class Door(Tile):
         self.d=type
         Tile.__init__(self,x,y,{'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][closed])
         self.layers.append(TILESET['door_open_h'])
-
+        if closed:
+            self.chType({'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed])
 
     def onCome(self):
         return self.open()

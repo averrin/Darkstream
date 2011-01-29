@@ -489,7 +489,9 @@ class Springstone(QMainWindow,App):
         try:
             item=self.scene.itemAt(self.mouse[0],self.mouse[1]).tile.info()
             self.coord.setHtml('<span style="color:green;background:black;">%d,%d -- %s</span>'%(self.mouse[0],self.mouse[1],item))
+#            self.core.drawTile(self.scene.itemAt(self.mouse[0],self.mouse[1]).tile)
         except Exception,e:
+#            print e
             pass
 
 import threading

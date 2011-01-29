@@ -33,8 +33,7 @@ class Core(object):
 #        self.app['echo']('<style>QWidget * {font-size: 18pt; color:blue;}</style>')
         self.app['print']('Welcome to Darkstream World!')
         self.app['print']('<img src="icons/real_poison.png" height="64">')
-        self.app['print'](u'С графикой что-то не выходит=( К тому же тормозит, гад=(')
-        self.app['print'](u'Пожалуй сначала функционал, а уже потом рюшечки.')
+        self.app['print'](open('TODO').read().replace('\n','<br>'))
         self.floor=0
         self.app.connect(self.app, SIGNAL('time'), self.stream)
         self.app.connect(self.app, SIGNAL('track'), self.track)
@@ -85,17 +84,25 @@ class Core(object):
 
     def drawTile(self,tile):
         try:
+            for i,item in enumerate(reversed(tile.items)):
+                if i:
+                    self.app.scene.removeItem(item)
+                tile.items.remove(item)
             for index,layer in enumerate(tile.layers):
-                tile.items.append(self.app['drawImage'](layer,tile.y*32,tile.x*32))
-                tile.items[index].tile=tile
+                item=self.app['drawImage'](layer,tile.y*32,tile.x*32)
+                tile.items.append(item)
+                item.tile=tile
                 pm=QPixmap(layer)
+#                print index
                 if index: #Sword bug still here=(
                     mask=pm.createHeuristicMask()
                     pm.setMask(mask)
                 tile.items[index].setPixmap(pm)
                 tile.items[index].update()
+
+#            print '---'
         except Exception,e:
-            print e
+            pass
 
 
     def m_move(self,d):
