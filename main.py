@@ -448,10 +448,12 @@ class Springstone(QMainWindow,App):
 #        self.core.stopServer()
 
     def m_drawImage(self,img,x,y):
-        pm=QPixmap(img)
+
+        pm=QPixmap(str(img))
 #        mask=pm.createMaskFromColor(QColor('#082152'))
-        mask=pm.createHeuristicMask()
-        pm.setMask(mask)
+        if img.alpha:
+            mask=pm.createHeuristicMask()
+            pm.setMask(mask)
 #        pm.setAlphaChannel(mask)
         item=QGraphicsPixmapItem(pm)
         self.scene.addItem(item)

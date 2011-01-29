@@ -90,19 +90,20 @@ class Core(object):
                 tile.items.remove(item)
             for index,layer in enumerate(tile.layers):
                 item=self.app['drawImage'](layer,tile.y*32,tile.x*32)
+#                print item.x() ,item.y()
                 tile.items.append(item)
                 item.tile=tile
-                pm=QPixmap(layer)
+#                pm=QPixmap(layer)
 #                print index
-                if index: #Sword bug still here=(
-                    mask=pm.createHeuristicMask()
-                    pm.setMask(mask)
-                tile.items[index].setPixmap(pm)
-                tile.items[index].update()
+#                if index and layer.alpha:
+#                    mask=pm.createHeuristicMask()
+#                    pm.setMask(mask)
+#                tile.items[index].setPixmap(pm)
+#                tile.items[index].update()
 
 #            print '---'
         except Exception,e:
-            pass
+            print e
 
 
     def m_move(self,d):

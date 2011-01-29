@@ -9,9 +9,9 @@ class Tileset(dict):
     def __init__(self,dir):
         self.dir=dir
         self.signs={
-         0:'1_3_0',
+         0:'1_2_0',
          1:'1_0_15',
-         2:'1_1_14',
+         2:'1_1_16',
          3:'1_0_14',
          4:'1_5_14',
          5:'1_0_16',
@@ -19,6 +19,11 @@ class Tileset(dict):
          7:'1_3_17',
          8:'1_3_17',
          9:'1_3_14',
+         10:'1_1_17',
+         11:'1_0_17',
+         12:'1_5_17',
+         13:'1_3_15',
+         14:'1_3_16',
          'none':' ',
          'door_closed_v':'2_2_10',
          'door_open_v':'1_0_18',
@@ -61,6 +66,14 @@ class Tileset(dict):
 
 TILESET=Tileset('default')
 
+class Layer(object):
+    def __init__(self,type,alpha=True):
+        self.alpha=alpha
+        self.type=type
+
+    def __str__(self):
+        return self.type
+
 class Tile(object):
     def __init__(self,x=0,y=0,type='none'):
         self.type=type
@@ -74,11 +87,11 @@ class Tile(object):
         self.layers=[]
         self.items=[]
 
-    def chType(self,type):
+    def chType(self,type,alpha=True):
 #        if self.type=='none':
 #            self.layers[0]=TILESET[type]
 #        else:
-        self.layers.append(TILESET[type])
+        self.layers.append(Layer(TILESET[type],alpha))
         self.type=type
 
     def getBackground(self):
@@ -107,7 +120,7 @@ class Tile(object):
     def setChar(self,char=''):
         self.char=char
         if char:
-            self.layers.append(char.sign)
+            self.layers.append(Layer(char.sign))
             self.onCharEnter()
             char.coord=(self.x,self.y)
             char.tile=self
@@ -130,7 +143,10 @@ class Tile(object):
 
 class Wall(Tile):
     def __init__(self,x=0,y=0,type='v'):
-        Tile.__init__(self,x,y,{'h':1,'v':2}[type])
+        try:
+            Tile.__init__(self,x,y,{'h':1,'v':2}[type])
+        except:
+            Tile.__init__(self,x,y,type)
         self.chType(self.type)
 
     def onCome(self):
@@ -145,7 +161,10 @@ class Window(Tile):
 
     def onCome(self):
         self.stage.core.app['print'](u'Ухты-йопты, окно!')
-        return False
+        if self.type=='v':
+            return False
+        else:
+            return True
 
 class Door(Tile):
     def __init__(self,x=0,y=0,type='v',closed=False,locked=False,lock_force=0):
@@ -153,7 +172,7 @@ class Door(Tile):
         self.locked=locked
         self.d=type
         Tile.__init__(self,x,y,{'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][closed])
-        self.layers.append(TILESET['door_open_h'])
+        self.layers.append(Layer(TILESET['door_open_h'],False))
         if closed:
             self.chType({'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed])
 
@@ -200,19 +219,30 @@ class Matrix(list):
                 if not i or i == self.rows-1:
                     for c,t in enumerate(row):
                         row[c]=Wall(c,i,'v')
+                        try:
+                            self[i+1][c].chType(10,False)
+                        except:
+                            self.addRow()
+                            self[i+1][c].chType(10,False)
 #                        row[0]=Wall(c,i,'v')
 #                        row[-1]=Wall(c,i,'v')
                     if not i:
                         row[0].chType(3)
                         row[-1].chType(4)
+
                     else:
                         row[0].chType(5)
                         row[-1].chType(6)
+                        self[i+1][0].chType(11)
+                        self[i+1][-1].chType(12)
                 else:
                     for ii,t in enumerate(row):
-                        t.chType(0)
-                    row[0]=Wall(c,i,'h')
-                    row[-1]=Wall(c,i,'h')
+                        if t.type=='none':
+                            t.chType(0,False)
+                    if i!=self.rows:
+#                        print i,self.rows
+                        row[0]=Wall(c,i,'h')
+                        row[-1]=Wall(c,i,'h')
 
     def getList(self):
         __list=[]
@@ -232,6 +262,7 @@ class Matrix(list):
         tile.y=y
         tile.stage=self
         self[y][x]=tile
+
 
     def addRow(self):
         self.append([])
@@ -260,6 +291,7 @@ class Matrix(list):
         for i,t in enumerate(row):
             if i in range(start,end) and i!=0 and i!=self.columns-1:
                 row[i]=Wall(t.x,t.y,'v')
+                self[y+1][i].chType(10,False)
 
 
     def fillArea(self,tl,br,type):
@@ -268,10 +300,10 @@ class Matrix(list):
             if row[0].y in range(tl[1],br[1]):
                 for t in row:
                     if t.x in range(tl[0],br[0]):
-                        if type in TILESET:
-                            t.chType(type)
-                        else:
-                            t.sign=type
+#                        if type in TILESET:
+                        t.chType(type)
+#                        else:
+#                            t.sign=type
 
     def removeArea(self,tl,br):
         self.fillArea(tl,br,'none')
@@ -284,6 +316,12 @@ class Matrix(list):
                 __row+=str(t)
             __str+=__row+'<br>'
         return __str
+
+    def addPass(self,x,y):
+        _pass=Tile()
+        _pass.chType(14)
+        self.set(x,y,_pass)
+        self.set(x,y-1,Wall(type=13))
 
 class Room(list):
     def __init__(self,tiles,tl,br,title=''):
@@ -318,15 +356,18 @@ def main():
     stage.addHWall(6)
     stage.addHWall(8,end=15)
     stage.addVWall(15)
-    stage[6][15].chType(9)
-    stage.set(15,4,Door(type='v'))
-    stage.set(15,7,Door(type='v',closed=True))
-    stage.set(3,6,Door(type='h'))
-    stage.set(18,6,Door(type='h',closed=True))
-    stage.set(12,8,Door(type='h',closed=True,locked=True))
-    stage.set(0,4,Window(type='v'))
-    stage.set(0,5,Window(type='v'))
-    stage.set(4,0,Window(type='h'))
+    stage[6][15].chType('1_3_14')
+#    stage[1][1].chType('1_3_14')
+#    stage.set(15,4,Door(type='v'))
+#    stage.set(15,4,Wall(type=13))
+    stage.addPass(15,4)
+#    stage.set(15,7,Door(type='v',closed=True))
+    stage.set(3,7,Door(type='h'))
+    stage.set(18,7,Door(type='h',closed=True))
+    stage.set(12,9,Door(type='h',closed=True,locked=True))
+#    stage.set(0,4,Window(type='v'))
+#    stage.set(0,5,Window(type='v'))
+#    stage.set(4,1,Window(type='h'))
 #    stage.set(3,0,Window(type='h'))
     rooms=[]
     rooms.append(Room(stage.getList(),(0,0),(15,7),'Your room'))
@@ -335,7 +376,7 @@ def main():
     rooms.append(Room(stage.getList(),(0,8),(15,16),'Hall'))
     stage.rooms=rooms
 #    stage.removeArea((2,12),(14,14))
-#    stage.fillArea((2,12),(14,14),'<span style="color:red;background:cyan;">*</span>')
+#    stage.fillArea((1,1),(10,1),TILESET['1_1_17'])
 #    stage[4][7].sign='<img src="icons/real_poison.png" width="8">'
 #    print stage
     return stage
