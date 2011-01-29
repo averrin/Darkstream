@@ -85,20 +85,15 @@ class Core(object):
 
     def drawTile(self,tile):
         try:
-            bg=self.app['drawImage'](tile.getBackground(),tile.y*32,tile.x*32)
-            pm=str(tile)
-            tile.item=self.app['drawImage'](pm,tile.y*32,tile.x*32)
-            tile.item.tile=tile
-            pm=QPixmap(pm)
-            if not tile.type:
-                ang=random.randint(0,5)*90
-                trans=QTransform()
-#                pm=pm.transformed(trans.rotate(ang))
-            if tile.type or (not tile.type and tile.char):
-                mask=pm.createHeuristicMask()
-                pm.setMask(mask)
-            tile.item.setPixmap(pm)
-            tile.item.update()
+            for index,layer in enumerate(tile.layers):
+                tile.items.append(self.app['drawImage'](layer,tile.y*32,tile.x*32))
+                tile.items[index].tile=tile
+                pm=QPixmap(layer)
+                if index: #Sword bug still here=(
+                    mask=pm.createHeuristicMask()
+                    pm.setMask(mask)
+                tile.items[index].setPixmap(pm)
+                tile.items[index].update()
         except Exception,e:
             print e
 

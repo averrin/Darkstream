@@ -65,16 +65,17 @@ class Tile(object):
         self.gdesc=''
         self.sign=''
         self.char=''
-        self.foreground=TILESET[self.type]
-        self.background=TILESET[self.type]
+        self.layers=[TILESET[self.type]]
+        self.items=[]
+#        self.foreground=TILESET[self.type]
+#        self.background=TILESET[self.type]
 
     def chType(self,type):
         self.type=type
-        self.foreground=TILESET[self.type]
-        self.background=TILESET[self.type]
+        self.layers.append(TILESET[self.type])
 
     def getBackground(self):
-        return self.background
+        return self.layers[0]
 
     def get(self,d):
         WORLD=self.stage
@@ -99,11 +100,13 @@ class Tile(object):
     def setChar(self,char=''):
         self.char=char
         if char:
+            self.layers.append(char.sign)
             self.onCharEnter()
             char.coord=(self.x,self.y)
             char.tile=self
             self.stage.core.drawTile(self)
         else:
+            self.layers.remove(self.layers[-1])
             self.onCharLeave()
 
     def onCharEnter(self):
@@ -126,7 +129,7 @@ class Tile(object):
 class Wall(Tile):
     def __init__(self,x=0,y=0,type='v'):
         Tile.__init__(self,x,y,{'h':1,'v':2}[type])
-        self.background=TILESET[self.type]
+        self.layers[0]=TILESET[self.type]
 
     def onCome(self):
         return False
@@ -135,7 +138,7 @@ class Wall(Tile):
 class Window(Tile):
     def __init__(self,x=0,y=0,type='v'):
         Tile.__init__(self,x,y,{'h':'window_h','v':'window_v'}[type])
-        self.background=TILESET[self.type]
+        self.layers[0]=TILESET[self.type]
 
     def onCome(self):
         self.stage.core.app['print'](u'Ухты-йопты, окно!')
@@ -147,7 +150,7 @@ class Door(Tile):
         self.locked=locked
         self.d=type
         Tile.__init__(self,x,y,{'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][closed])
-        self.background=TILESET['door_open_h']
+        self.layers.append(TILESET['door_open_h'])
 
 
     def onCome(self):
