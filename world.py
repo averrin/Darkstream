@@ -155,16 +155,17 @@ class Wall(Tile):
         return False
 
 class InternalWall(Tile):
-    def __init__(self,x=0,y=0,type='up'):
+    def __init__(self,x=0,y=0,type='up',id=0):
         if type=='up':
             self.type=2
         else:
             self.type=10
         Tile.__init__(self,x,y,self.type)
         self.chType(self.type,False)
+        self.id=id
 
     def onCome(self,char):
-        if (self.type==2 and char.tile.type!=10) or (self.type==10 and char.tile.type!=2): #FIXMe: near walls (maybe implement WallID)
+        if (self.type==2 and (char.tile.type!=10 or char.tile.id!=self.id)) or (self.type==10 and (char.tile.type!=2 or char.tile.id!=self.id)):
             return True
         else:
             return False
@@ -311,14 +312,14 @@ class Matrix(list):
             elif i==self.rows-1:
                 row[x].chType(7)
 
-    def addHWall(self,y,start=0,end=0):
+    def addHWall(self,y,start=0,end=0,id=0):
         if not end:
             end=self.columns-1
         row=self[y]
         for i,t in enumerate(row):
             if i in range(start,end) and i!=0 and i!=self.columns-1:
-                self.set(t.x,t.y,InternalWall(type='up'))
-                self.set(t.x,t.y+1,InternalWall(type='down'))
+                self.set(t.x,t.y,InternalWall(type='up',id=id))
+                self.set(t.x,t.y+1,InternalWall(type='down',id=id))
 #                self[y+1][i]=InternalWall(t.x,t.y+1,'down')
 
 
@@ -382,7 +383,7 @@ def main():
     stage=Matrix(16,30,room=True)
 #    stage.set(6,4,Tile(type='hero'))
     stage.addHWall(6)
-    stage.addHWall(8,end=15)
+    stage.addHWall(8,end=15,id=1)
     stage.addVWall(15)
     stage[6][15].chType('1_3_14')
 #    stage[1][1].chType('1_3_14')
