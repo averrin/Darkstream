@@ -10,9 +10,15 @@ class Tileset(dict):
         self.dir=dir
         self.signs={
          0:'1_3_0',
-         1:'1_3_13',
+         1:'1_0_15',
          2:'1_1_14',
-         3:'1_1_14',
+         3:'1_0_14',
+         4:'1_5_14',
+         5:'1_0_16',
+         6:'1_5_16',
+         7:'1_3_17',
+         8:'1_3_17',
+         9:'1_3_14',
          'none':' ',
          'door_closed_v':'2_2_10',
          'door_open_v':'1_0_18',
@@ -194,8 +200,14 @@ class Matrix(list):
                 if not i or i == self.rows-1:
                     for c,t in enumerate(row):
                         row[c]=Wall(c,i,'v')
-                        row[0]=Wall(c,i,'v')
-                        row[-1]=Wall(c,i,'v')
+#                        row[0]=Wall(c,i,'v')
+#                        row[-1]=Wall(c,i,'v')
+                    if not i:
+                        row[0].chType(3)
+                        row[-1].chType(4)
+                    else:
+                        row[0].chType(5)
+                        row[-1].chType(6)
                 else:
                     for ii,t in enumerate(row):
                         t.chType(0)
@@ -230,20 +242,25 @@ class Matrix(list):
         for i,row in enumerate(self):
             row.append(Tile(len(row),i))
 
-    def addHWall(self,x,start=0,end=0):
+    def addVWall(self,x,start=0,end=0):
         if not end:
             end=self.rows-1
         for i,row in enumerate(self):
             if i in range(start,end) and i!=0 and i!=self.rows-1:
                 row[x]=Wall(row[x].x,row[i].y,'h')
+            elif not i:
+                row[x].chType(9)
+            elif i==self.rows-1:
+                row[x].chType(7)
 
-    def addVWall(self,y,start=0,end=0):
+    def addHWall(self,y,start=0,end=0):
         if not end:
             end=self.columns-1
         row=self[y]
         for i,t in enumerate(row):
             if i in range(start,end) and i!=0 and i!=self.columns-1:
                 row[i]=Wall(t.x,t.y,'v')
+
 
     def fillArea(self,tl,br,type):
         area=self
@@ -298,9 +315,10 @@ class Room(list):
 def main():
     stage=Matrix(16,30,room=True)
 #    stage.set(6,4,Tile(type='hero'))
-    stage.addVWall(6)
-    stage.addVWall(8,end=15)
-    stage.addHWall(15)
+    stage.addHWall(6)
+    stage.addHWall(8,end=15)
+    stage.addVWall(15)
+    stage[6][15].chType(9)
     stage.set(15,4,Door(type='v'))
     stage.set(15,7,Door(type='v',closed=True))
     stage.set(3,6,Door(type='h'))
