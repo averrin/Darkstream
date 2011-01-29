@@ -148,7 +148,8 @@ class Springstone(QMainWindow,App):
         return window
 
     def m_echo(self,msg):
-        dialog={'Darkstream':'Hello, kitty!','boom':'oops'}
+#        dialog={'Darkstream':'Hello, kitty!','boom':'oops'}
+        self.mainBrowser.setHtml(msg.replace('\n','<br>'))
 #        try:
 #            msg=str(msg.path())
 #            self.textBrowser.append(dialog[msg])

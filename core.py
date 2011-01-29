@@ -59,6 +59,7 @@ class Core(object):
 
     def m_redraw(self):
         pass
+#        self.app['echo']('Hero at %s\nTransparency: %s'%(self.hero.coord,self.hero.sign.trans))
 #        self.app.scene.clear()
 #        self.draw(self.stage)
 
@@ -122,6 +123,10 @@ class NPC(Char):
                     'w':Layer(TILESET['char_%s_3'%chset]),
                     }
         self.sign=self.signs['s']
+
+    def setTrans(self,trans):
+        for layer in self.signs:
+            self.signs[layer].trans=trans
 
     def spawn(self,tile):
         tile.setChar(self)

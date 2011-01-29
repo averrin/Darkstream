@@ -164,7 +164,7 @@ class InternalWall(Tile):
         self.chType(self.type,False)
 
     def onCome(self,char):
-        if (self.type==2 and char.tile.type!=10) or (self.type==10 and char.tile.type!=2): #FIXMe: near walls
+        if (self.type==2 and char.tile.type!=10) or (self.type==10 and char.tile.type!=2): #FIXMe: near walls (maybe implement WallID)
             return True
         else:
             return False
@@ -172,10 +172,10 @@ class InternalWall(Tile):
 
     def onCharEnter(self,char):
         if self.type==2:
-            self.char.sign.trans=128
+            self.char.setTrans(128)
         self.stage.core.drawTile(self)
     def onCharLeave(self,char):
-        self.char.sign.trans=0 #Transparency bug still happens
+        self.char.setTrans(0)
         self.stage.core.drawTile(self)
 
 
