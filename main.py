@@ -9,6 +9,7 @@ import os
 import re
 import time
 import sys
+from world import Layer,TILESET
 
 __author__ = 'averrin'
 
@@ -53,9 +54,6 @@ class myLogger(API):
     def error(self,*args,**kwargs):
         self.ex('error')(*args,**kwargs)
 
-#TODO: log dockwidget to independent class
-#TODO: protect passwords
-
 class Springstone(QMainWindow,App):
     def __init__(self, *args,**kwargs):
         self.threads_=[]
@@ -89,6 +87,10 @@ class Springstone(QMainWindow,App):
         self.graphicsView.mousePressEvent=self.mousePressEvent
         self.graphicsView.mouseReleaseEvent=self.mouseReleaseEvent
         self.graphicsView.mouseMoveEvent=self.mouseMoveEvent
+
+        self.cursor=self['drawImage'](Layer(TILESET['0_5_20'],alpha=False,trans=40),0,0)
+        self.cursor.setZValue(10)
+
         screen = QDesktopWidget().screenGeometry()
         QMainWindow.setGeometry(self,0, 0, screen.width(), screen.height())
 
@@ -491,9 +493,12 @@ class Springstone(QMainWindow,App):
 #            self.setMatrix(m)
         self.mouse = [ev.pos().x(), ev.pos().y()]
         try:
-            item=self.scene.itemAt(self.mouse[0],self.mouse[1]).tile.info()
-            self.coord.setHtml('<span style="color:green;background:black;">%d,%d -- %s</span>'%(self.mouse[0],self.mouse[1],item))
-#            self.core.drawTile(self.scene.itemAt(self.mouse[0],self.mouse[1]).tile)
+            item=self.scene.itemAt(self.mouse[0],self.mouse[1])
+            self.coord.setHtml('<span style="color:green;background:black;">%d,%d -- %s</span>'%(self.mouse[0],self.mouse[1],item.tile.info()))
+            self.cursor.setPos(item.x(),item.y())
+#            tile=self.scene.itemAt(self.mouse[0],self.mouse[1]).tile
+#            tile.layers.append(Layer('0_5_20',False,128))
+#            self.core.drawTile(tile)
         except Exception,e:
 #            print e
             pass
