@@ -5,7 +5,7 @@ import uuid
 from PyQt4.QtGui import *
 import json
 import world
-from world import TILESET,Layer
+from world import TILESET,Layer,WORLD
 #import game
 from rpgbase import *
 from PyQt4.QtCore import *
@@ -27,7 +27,7 @@ class Core(object):
 
 
     def onAppShow(self):
-        self.stage=world.main()
+        self.stage=WORLD.getStage('FS')
         self.stage.core=self
         self.app['setText'](self.stage)
 #        self.app['echo']('<style>QWidget * {font-size: 18pt; color:blue;}</style>')

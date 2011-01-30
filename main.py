@@ -536,9 +536,9 @@ def main():
 #    app.textBrowser.setSource=app.m_echo
 #    app.textBrowser.setStyleSheet("QWidget {line-height: 0 !important;}")
 #    app.api.echo('<style>a { color: green; } a:visited { color: red; }</style>')
-    app.api.echo('Welcome to <a href="Darkstream" class="link">Darkstream</a>.')
-    app.api.echo('TODO: full-functionality UI')
-    app.api.echo('TODO: Hero generation <a href="boom" class="link">wizard</a>')
+#    app.api.echo('Welcome to <a href="Darkstream" class="link">Darkstream</a>.')
+#    app.api.echo('TODO: full-functionality UI')
+#    app.api.echo('TODO: Hero generation <a href="boom" class="link">wizard</a>')
     endtime=datetime.now()
     delta=endtime-starttime
     app['debug']('Initialization time: %s' % delta)

@@ -143,6 +143,20 @@ class Tile(object):
     def info(self):
         return self.__class__.__name__, self.type, self.char.Name if self.char else '', self.__str__(), 'items:',len(self.items)
 
+
+class TransTile(Tile):
+    def __init__(self,x=0,y=0,type=1):
+        Tile.__init__(self,x,y,type)
+        self.chType(type)
+
+    def onCharEnter(self,char):
+        self.char.setTrans(128)
+        self.stage.core.drawTile(self)
+    def onCharLeave(self,char):
+        self.char.setTrans(0)
+        self.stage.core.drawTile(self)
+
+
 class Wall(Tile):
     def __init__(self,x=0,y=0,type='v'):
         try:
@@ -194,7 +208,7 @@ class Window(Tile):
         else:
             return True
 
-class Door(Tile):
+class Door(Tile): #TODO: do something for InternalWalls
     def __init__(self,x=0,y=0,type='v',closed=False,locked=False,lock_force=0):
         self.closed=closed
         self.locked=locked
@@ -232,7 +246,7 @@ class Door(Tile):
 
 
 
-class Matrix(list):
+class Stage(list):
     def __init__(self,rows=1,columns=0,room=False):
         self.rows=rows
         self.columns=columns
@@ -351,6 +365,7 @@ class Matrix(list):
         _pass.chType(14)
         self.set(x,y,_pass)
         self.set(x,y-1,Wall(type=13))
+        self.set(x,y+1,TransTile(type=1))
 
 class Room(list):
     def __init__(self,tiles,tl,br,title=''):
@@ -378,42 +393,17 @@ class Room(list):
             __str+=__row+'\n'
         return __str
 
+    def gen(self):
+        pass
 
-def main():
-    stage=Matrix(16,30,room=True)
-#    stage.set(6,4,Tile(type='hero'))
-    stage.addHWall(6)
-    stage.addHWall(8,end=15,id=1)
-    stage.addVWall(15)
-    stage[6][15].chType('1_3_14')
-#    stage[1][1].chType('1_3_14')
-#    stage.set(15,4,Door(type='v'))
-#    stage.set(15,4,Wall(type=13))
-    stage.addPass(15,4)
-    stage.addPass(15,7)
-#    stage.set(15,7,Door(type='v',closed=True))
-    stage.set(3,7,Door(type='h'))
-    stage.set(18,7,Door(type='h',closed=True))
-    stage.set(12,9,Door(type='h',closed=True,locked=True))
-#    stage.set(0,4,Window(type='v'))
-#    stage.set(0,5,Window(type='v'))
-#    stage.set(4,1,Window(type='h'))
-#    stage.set(3,0,Window(type='h'))
-    rooms=[]
-    rooms.append(Room(stage.getList(),(0,0),(15,7),'Your room'))
-    rooms.append(Room(stage.getList(),(15,0),(35,7),'Kiro room'))
-    rooms.append(Room(stage.getList(),(15,6),(35,16),'Main hall'))
-    rooms.append(Room(stage.getList(),(0,8),(15,16),'Hall'))
-    stage.rooms=rooms
-#    stage.removeArea((2,12),(14,14))
-#    stage.fillArea((1,1),(10,1),TILESET['1_1_17'])
-#    stage[4][7].sign='<img src="icons/real_poison.png" width="8">'
-#    print stage
-    return stage
-#    t=stage.get(0,0).get('bottom')
-#    for i in xrange(30):
-#        t=t.get('left')
-#        print t.coords
 
-if __name__ == '__main__':
-    main()
+from stages import stages
+class World(object):
+    def __init__(self,stages):
+        self.stages=stages
+
+    def getStage(self,id):
+        return self.stages[id].gen()
+
+WORLD = World(stages)
+
