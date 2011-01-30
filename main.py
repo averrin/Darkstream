@@ -193,7 +193,7 @@ class Springstone(QMainWindow,App):
         try:
             self.exMethod(item.plugin,'itemClicked',item)
         except:
-            self['error']('%s have no itemClicked() method' % (item.plugin))
+            self['error']('%s have no itemClicked() method' % item.plugin)
 
     def m_removeItem(self,item):
         #FIXME: this
@@ -205,7 +205,7 @@ class Springstone(QMainWindow,App):
         try:
             self.exMethod(item.plugin,'itemClicked',item)
         except:
-            self['error']('%s have no itemClicked() method' % (item.plugin))
+            self['error']('%s have no itemClicked() method' % item.plugin)
 
     def m_addListItem(self,*args,**kwargs):
         item=self.makeMessage(*args,**kwargs)

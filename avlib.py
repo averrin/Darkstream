@@ -659,7 +659,7 @@ class App(object):
         if not passw:
             self.getAuth(login_name,login_desc,pass_name,pass_desc)
         login= self.getOption(login_name,desc=login_desc)
-        return (str(base64.b64decode(str(passw)).replace('\x00','')),login)
+        return str(base64.b64decode(str(passw)).replace('\x00','')),login
 
     def getOption(self,name,default='',desc=''):
         if not name in self.api.config['Plugins']:
@@ -853,7 +853,7 @@ class old_PluginManager(object):
         self.onLoad()
 
     def loadPlugin(self,plugin):
-        plugin=plugin+'Plugin'
+        plugin += 'Plugin'
         for dict in self.Classes:
             if dict['name']==plugin:
                 pclass=dict['class']
@@ -918,5 +918,5 @@ class old_API(object):
             self.api.echo('Self-unload forbidden!')
 
     def echo(self,msg):
-        print '%s' % (msg)
+        print '%s' % msg
 

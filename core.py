@@ -6,7 +6,7 @@ from PyQt4.QtGui import *
 import json
 import world
 from world import TILESET,Layer,WORLD
-#import game
+from npc import NPCs
 from rpgbase import *
 from PyQt4.QtCore import *
 
@@ -45,10 +45,10 @@ class Core(object):
         self.app.statusbar.showMessage(str('wtf?'))
         self.stream.start()
         self.draw(self.stage)
-        self.hero=Hero(chset=10)
+        self.hero=NPCs['Hero']
         self.h=self.stage[4][6]
         self.hero.spawn(self.h)
-        kiro=NPC(chset=9)
+        kiro=NPCs['Kiro']
         kiro.spawn(self.stage[5][12])
 
     def stream(self,*args):

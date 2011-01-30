@@ -81,10 +81,6 @@ class Wearable(Item):
 		self.quality=quality
 		self.title=title
 		self.is_id=False
-		"""print item_type
-		print quality
-		print material
-		print title"""
 		self.name=self.genName()
 		self.info=self.name
 
