@@ -92,7 +92,12 @@ class Tile(object):
 #        if self.type=='none':
 #            self.layers[0]=TILESET[type]
 #        else:
-        self.layers.append(Layer(TILESET[type],alpha))
+        if not self.char:
+            self.layers.append(Layer(TILESET[type],alpha))
+        else:
+            self.layers.remove(self.layers[-1])
+            self.layers.append(Layer(TILESET[type],alpha))
+            self.layers.append(self.char.sign)
         self.type=type
 
     def getBackground(self):
@@ -218,10 +223,11 @@ class Door(Tile): #TODO: do something for InternalWalls
         self.closed=closed
         self.locked=locked
         self.d=type
-        Tile.__init__(self,x,y,{'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][closed])
+        self.dict={'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}
+        Tile.__init__(self,x,y,self.dict[self.d][closed])
         self.layers.append(Layer(TILESET['door_open_h'],False))
         if closed:
-            self.chType({'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed])
+            self.chType(self.dict[self.d][self.closed])
 
     def onCome(self,char):
         if self.d == 'v':
@@ -242,7 +248,7 @@ class Door(Tile): #TODO: do something for InternalWalls
         if self.closed:
             if not self.locked:
                 self.closed=False
-                self.chType({'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed])
+                self.chType(self.dict[self.d][self.closed])
             else:
                 self.stage.core.app['print'](u'Заперто!')
 
@@ -254,11 +260,11 @@ class Door(Tile): #TODO: do something for InternalWalls
 
     def onCharLeave(self,char):
         Tile.onCharLeave(self,self.char)
-        self.close()
+#        self.close() #It fix door bug
 
     def close(self):
         self.closed=True
-        self.chType({'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed])
+        self.chType(self.dict[self.d][self.closed])
         self.stage.core.drawTile(self)
 
 
