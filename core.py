@@ -1,13 +1,6 @@
 # -*- coding: utf-8 -*-
-import random
-import re
-import uuid
-from PyQt4.QtGui import *
-import json
-import world
-from world import TILESET,Layer,WORLD
+from world import WORLD
 from npc import NPCs
-from rpgbase import *
 from PyQt4.QtCore import *
 
 class Core(object):
@@ -45,6 +38,8 @@ class Core(object):
         self.app.statusbar.showMessage(str('wtf?'))
         self.stream.start()
         self.draw(self.stage)
+        for npc in NPCs:
+            NPCs[npc].core=self
         self.hero=NPCs['Hero']
         self.h=self.stage[4][6]
         self.hero.spawn(self.h)
@@ -112,43 +107,7 @@ class Core(object):
         self.app.coord.setHtml('<span style="color:green">%d,%d -- %s</span>'%(x,y,item))
 #        pass
 
-class NPC(Char):
-    def __init__(self,chset,*args,**kwargs):
-        Char.__init__(self,*args,**kwargs)
-        self.coord=(0,0)
-        self.signs={
-                    's':Layer(TILESET['char_%s_2'%chset]),
-                    'n':Layer(TILESET['char_%s_0'%chset]),
-                    'e':Layer(TILESET['char_%s_1'%chset]),
-                    'w':Layer(TILESET['char_%s_3'%chset]),
-                    }
-        self.sign=self.signs['s']
 
-    def setTrans(self,trans):
-        for layer in self.signs:
-            self.signs[layer].trans=trans
-
-    def spawn(self,tile):
-        tile.setChar(self)
-        self.tile=tile
-
-    def onTouch(self):
-        core.app['print'](u'Иди на хрен, мальчик!')
-
-    def makeAlive(self):
-        print 'ololo'
-
-    def move(self,d):
-        self.sign=self.signs[d]
-        if self.tile.get(d).onCome(self):
-            self.tile.setChar()
-            self.tile = self.tile.get(d)
-            self.tile.setChar(self)
-
-
-class Hero(NPC):
-    def __init__(self,*args,**kwargs):
-        NPC.__init__(self,*args,**kwargs)
 
 import threading, time
 class Stream(QThread):
@@ -180,3 +139,7 @@ class Stream(QThread):
 #                if self.Trig:
 #                    time.sleep(1)
 #            self.do(*self.args,**self.kwargs)
+
+
+if __name__ == '__main__':
+    core=Core()
