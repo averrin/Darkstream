@@ -1,4 +1,4 @@
-from world import Stage, Door, Room
+from world import Stage, Door, Room, Furniture, Layer, TILESET
 
 __author__ = 'averrin'
 
@@ -28,6 +28,16 @@ def genFS(self):
     rooms.append(Room(stage.getList(),(15,6),(35,16),'Main hall'))
     rooms.append(Room(stage.getList(),(0,8),(15,16),'Hall'))
     stage.rooms=rooms
+
+    comod=Furniture(2,2)
+    comod.setMap([['2_0_26','2_1_26'],['2_0_27','2_1_27']])
+    comod.place(stage,1,1)
+    stage[1][1].blocked=True
+    stage[1][2].blocked=True
+#    stage[0][6].layers.append(Layer(TILESET['2_0_24'],True))
+#    stage[1][7].layers.append(Layer(TILESET['2_0_24'],True))
+#    stage[1][7].layers.append(Layer(TILESET['2_6_26'],True))
+
     return stage
 
 setGen(stages['FS'],genFS)

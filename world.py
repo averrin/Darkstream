@@ -87,6 +87,7 @@ class Tile(object):
         self.char=''
         self.layers=[]
         self.items=[]
+        self.blocked=False
 
     def chType(self,type,alpha=True):
 #        if self.type=='none':
@@ -118,7 +119,10 @@ class Tile(object):
 
     def onCome(self,char):
         if not self.char:
-            return True
+            if not self.blocked:
+                return True
+            else:
+                return False
         else:
             self.char.onTouch()
             return False
@@ -146,7 +150,7 @@ class Tile(object):
         return self.layers
 
     def info(self):
-        return self.__class__.__name__, self.type, self.char.Name if self.char else '', self.__str__(), 'items:',len(self.items)
+        return self.__class__.__name__, self.type, self.char.Name if self.char else '', self.__str__(), 'items:',len(self.items), 'blocked',self.blocked
 
 
     def onLeft(self,char):
@@ -189,7 +193,10 @@ class InternalWall(Tile):
 
     def onCome(self,char):
         if (self.type==2 and (char.tile.type!=10 or char.tile.id!=self.id)) or (self.type==10 and (char.tile.type!=2 or char.tile.id!=self.id)):
-            return True
+            if not self.blocked:
+                return True
+            else:
+                return False
         else:
             return False
 
@@ -418,6 +425,33 @@ class Room(list):
 
     def gen(self):
         pass
+
+
+class Furniture(object): #Grafics artifacts=(
+    def __init__(self,height,width):
+        self.h=height
+        self.w=width
+        self.list=[]
+        for row in xrange(height):
+            self.list.append([])
+            for col in xrange(width):
+                self.list[row].append('')
+
+    def setPart(self,row,col,type):
+        print row,col,type
+        self.list[row][col]=Layer(TILESET[type],True)
+
+    def setMap(self,map):
+        for i,row in enumerate(map):
+            for c,col in enumerate(row):
+                self.setPart(i,c,col)
+
+    def place(self,stage,x,y):
+        self.stage=stage
+        for i,row in enumerate(self.list):
+            for c,col in enumerate(row):
+                stage[y+i][x+c].layers.append(col)
+
 
 
 from stages import stages
