@@ -88,7 +88,7 @@ class Springstone(QMainWindow,App):
         self.graphicsView.mouseReleaseEvent=self.mouseReleaseEvent
         self.graphicsView.mouseMoveEvent=self.mouseMoveEvent
 
-        self.cursor=self['drawImage'](Layer(TILESET['0_5_20'],alpha=False,trans=40),0,0)
+        self.cursor=self['drawImage'](Layer(TILESET['2_4_4'],alpha=True,trans=80),0,0)
         self.cursor.setZValue(10)
 
         screen = QDesktopWidget().screenGeometry()

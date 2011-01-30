@@ -147,10 +147,13 @@ class Tile(object):
         self.stage.core.drawTile(self)
 
     def __str__(self):
-        return self.layers
+        return str(self.layers)
 
     def info(self):
-        return self.__class__.__name__, self.type, self.char.Name if self.char else '', self.__str__(), 'items:',len(self.items), 'blocked',self.blocked
+        layers=''
+        for layer in self.layers:
+            layers+=str(layer)+','
+        return 'Class: %s, Type: %s <br> Char: %s <br>Layers: %s <br>Items: %s, Blocked: %s' % (self.__class__.__name__, self.type, self.char.Name if self.char else '',layers,len(self.items),self.blocked)
 
 
     def onLeft(self,char):
@@ -438,7 +441,6 @@ class Furniture(object): #Grafics artifacts=(
                 self.list[row].append('')
 
     def setPart(self,row,col,type):
-        print row,col,type
         self.list[row][col]=Layer(TILESET[type],True)
 
     def setMap(self,map):
