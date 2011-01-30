@@ -31,8 +31,9 @@ class NPC(Char):
         print 'ololo'
 
     def move(self,d):
+        self.d=d
         self.sign=self.signs[d]
-        if self.tile.get(d).onCome(self):
+        if self.tile.onLeft(self) and self.tile.get(d).onCome(self):
             self.tile.setChar()
             self.tile = self.tile.get(d)
             self.tile.setChar(self)

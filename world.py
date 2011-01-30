@@ -144,6 +144,10 @@ class Tile(object):
         return self.__class__.__name__, self.type, self.char.Name if self.char else '', self.__str__(), 'items:',len(self.items)
 
 
+    def onLeft(self,char):
+        return True
+
+    
 class TransTile(Tile):
     def __init__(self,x=0,y=0,type=1):
         Tile.__init__(self,x,y,type)
@@ -185,6 +189,7 @@ class InternalWall(Tile):
             return False
 
 
+
     def onCharEnter(self,char):
         if self.type==2:
             self.char.setTrans(128)
@@ -219,7 +224,19 @@ class Door(Tile): #TODO: do something for InternalWalls
             self.chType({'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}[self.d][self.closed])
 
     def onCome(self,char):
-        return self.open()
+        if self.d == 'v':
+            return self.open()
+        else:
+            if char.d == 's':
+                return self.open()
+            else:
+                return True
+            
+    def onLeft(self,char):
+        if char.d=='n':
+            return self.open()
+        else:
+            return True
 
     def open(self):
         if self.closed:

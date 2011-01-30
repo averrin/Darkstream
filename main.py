@@ -19,9 +19,6 @@ icons=loadIcons(cwd+'icons/')
 
 starttime=datetime.now()
 
-#TODO: QDir QDirIterator
-
-
 class myAPI(API):
     def __init__(self):
         super(myAPI,self).__init__()
