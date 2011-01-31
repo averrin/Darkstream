@@ -50,8 +50,8 @@ class Tileset(dict):
         try:
             im = Image.open('tilesets/%s/chars.png'%self.dir)
             xsize,ysize=im.size
-            for row in xrange(31):
-                for col in xrange(15):
+            for row in xrange(15):
+                for col in xrange(31):
                     box = ((xsize/32)*col ,(ysize/16)*row, (xsize/32)*(col+1), (ysize/16)*(row+1))
                     region = im.crop(box)
                     region.save('tilesets/.temp/char_%d_%d.png' % (col,row), "png")
