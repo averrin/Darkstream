@@ -496,9 +496,6 @@ class Springstone(QMainWindow,App):
             item=self.scene.itemAt(self.mouse[0],self.mouse[1])
             self.coord.setHtml('<span style="color:green;background:black;">%d,%d -- %s</span>'%(self.mouse[0],self.mouse[1],item.tile.info()))
             self.cursor.setPos(item.x(),item.y())
-#            tile=self.scene.itemAt(self.mouse[0],self.mouse[1]).tile
-#            tile.layers.append(Layer('0_5_20',False,128))
-#            self.core.drawTile(tile)
         except Exception,e:
 #            print e
             pass
