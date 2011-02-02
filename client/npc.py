@@ -24,6 +24,9 @@ class NPC(Char):
         tile.setChar(self)
         self.tile=tile
 
+    def remove(self):
+        self.tile.setChar()
+
     def onTouch(self):
         self.core.app['print'](u'Иди на хрен, мальчик!')
 
@@ -47,7 +50,7 @@ def genHero():
     return hero
 
 
-NPCs={'Kiro':NPC(chset=9),'Hero':genHero()}
+NPCs={'Kiro':NPC(chset=9),'Hero':genHero(),'other':NPC(chset=6)}
 
 #if __name__ == '__main__':
 #    core=Core()

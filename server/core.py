@@ -95,7 +95,7 @@ class Core(object):
                 return self.transport.getPeer().host
 
             def new(self):
-                self.factory.sendMessageToAllClients('{"sign":"new","args":[{"uid":"%s","name":"%s","ip":"%s"}]}' % (self.client.id,self.client.name,self.client.ip))
+                self.factory.sendMessageToAllClients('{"sign":"new","args":[{"uid":"%s","name":"%s","ip":"%s","coord":"%s"}]}' % (self.client.id,self.client.name,self.client.ip,self.client.coord))
 
             def uid(self):
                 self.sendLine('{"sign":"uid","args":["%s"]}' % self.client.id)
@@ -104,7 +104,7 @@ class Core(object):
                 cllist=[]
                 for client in core.clients:
                     client=core.clients[client]
-                    cllist.append({"uid":client.id,"name":client.name,"ip":client.ip})
+                    cllist.append({"uid":client.id,"name":client.name,"ip":client.ip,"coord":client.coord})
 
                 self.sendLine('{"sign":"list","args":%s}' % cllist)
 
@@ -148,9 +148,10 @@ class Core(object):
                     self.sendLine("Wrong command.")
 
 
-            def m_name(self,name):
+            def m_name(self,name,coord):
                 self.name = name
                 self.client.name = name
+                self.client.coord=coord
                 self.client.refresh()
                 self.new()
 

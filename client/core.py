@@ -12,6 +12,7 @@ class Core(object):
         global core
         core=self
         self.clients={}
+        self.players={}
 
 
     def onAppInit(self):
@@ -61,7 +62,7 @@ class Core(object):
         self.status=self.api.exMethod('main','addListItem','Me\noffline',icon='offline')
         self.api.exMethod('main','addItemButton',self.status,'update',self.m_toggleconnect)
         self.status.plugin='main'
-        self.twisted__init__()
+
 
         self.api.info("Client init successfully")
 
@@ -92,7 +93,11 @@ class Core(object):
         kiro=NPCs['Kiro']
         kiro.spawn(self.stage[5][12])
 
+
         #==========================
+
+        self.twisted__init__()
+        self.client.core=self
         self.m_connect()
 
 
@@ -115,6 +120,11 @@ class Core(object):
             self.clients[uid]=friend
             self.clients[uid]['status']=self.api.exMethod('main','addListItem','%s\nonline' % friend['name'],icon='online')
             self.api.info("%s online" % friend['name'])
+            other=NPCs['other']
+            xy=eval(friend['coord'])
+            other.spawn(self.stage[xy[1]][xy[0]])
+            self.players[uid]=other
+#            self['drawTile'](self.stage[6][6])
         elif hasattr(self,'uid') and uid==self.uid:
             pass
         elif hasattr(self,'uid'):
@@ -122,9 +132,11 @@ class Core(object):
             self.clients[uid]['status'].setText('%s\nonline' % friend['name'])
             self.api.info("%s know as %s" % (friend['uid'],friend['name']))
 
+
     def m_left(self,uid):
         self.api.exMethod('main','removeItem',self.clients[uid]['status'])
         self.api.info("%s offline" % self.clients[uid]['name'])
+        self.players[uid].remove()
         del self.clients[uid]
 
 
@@ -145,8 +157,9 @@ class Core(object):
         class Client(LineReceiver):
             def reg(self):
                 nick=core.app.options['nickname']
-                self.sendLine('{"sign":"name","args":["%s"]}' % nick)
+                self.sendLine('{"sign":"name","args":["%s","%s"]}' % (nick,core.hero.coord))
                 core.api.info("Login as %s" % nick)
+
 
             def init(self):
                 self.ready=False
