@@ -2,6 +2,8 @@
 from world import WORLD
 from npc import NPCs
 from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+import json
 
 class Core(object):
     def __init__(self,project):
@@ -9,6 +11,7 @@ class Core(object):
         self.items=[]
         global core
         core=self
+        self.clients={}
 
 
     def onAppInit(self):
@@ -19,7 +22,50 @@ class Core(object):
         pass
 
 
+
+    def onError(self,reason):
+        self.app['error'](str(reason.getErrorMessage()).decode('utf-8'))
+
+    def m_itemClicked(self,item):
+        pass
+
+    def m_send(self,msg):
+        self.protocol.sendLine(msg)
+
+    def m_connect(self):
+        try:
+            self.client.connectTCP("localhost", self.PORT).addCallback(self.client.onConnect).addErrback(self.onError)
+            self.online=True
+            self.reactor.run()
+        except Exception,e:
+            self.app['error'](e)
+
+    def m_disconnect(self):
+        self.reactor.stop()
+        self.api.info("Client disconnected")
+        self.status.setText('My\noffline')
+        self.status.setIcon(QIcon(self.api.icons['offline']))
+        self.online=False
+
+    def m_toggleconnect(self):
+        if self.online:
+            self.m_disconnect()
+        else:
+            self.m_connect()
+
+
+
+
     def onAppShow(self):
+
+        self.status=self.api.exMethod('main','addListItem','Me\noffline',icon='offline')
+        self.api.exMethod('main','addItemButton',self.status,'update',self.m_toggleconnect)
+        self.status.plugin='main'
+        self.twisted__init__()
+
+        self.api.info("Client init successfully")
+
+        #=====================
         self.stage=WORLD.getStage('FS')
         self.stage.core=self
         self.app['setText'](self.stage)
@@ -45,6 +91,106 @@ class Core(object):
         self.hero.spawn(self.h)
         kiro=NPCs['Kiro']
         kiro.spawn(self.stage[5][12])
+
+        #==========================
+        self.m_connect()
+
+
+
+
+    def m_uid(self,uid,*args):
+        self.uid=uid
+        print 'uid',self.uid
+        self.app['debug']('My uid: %s' % uid)
+
+    def m_list(self,*args):
+        for friend in args:
+            self.m_new(friend)
+
+    def m_new(self,dict,*args):
+        friend=dict
+        uid=friend['uid']
+        if hasattr(self,'uid') and uid!=self.uid and uid not in self.clients:
+            print 'new',self.uid,uid
+            self.clients[uid]=friend
+            self.clients[uid]['status']=self.api.exMethod('main','addListItem','%s\nonline' % friend['name'],icon='online')
+            self.api.info("%s online" % friend['name'])
+        elif hasattr(self,'uid') and uid==self.uid:
+            pass
+        elif hasattr(self,'uid'):
+            self.clients[uid]['name']=friend['name']
+            self.clients[uid]['status'].setText('%s\nonline' % friend['name'])
+            self.api.info("%s know as %s" % (friend['uid'],friend['name']))
+
+    def m_left(self,uid):
+        self.api.exMethod('main','removeItem',self.clients[uid]['status'])
+        self.api.info("%s offline" % self.clients[uid]['name'])
+        del self.clients[uid]
+
+
+    def twisted__init__(self):
+
+        import qt4reactor
+
+        qt4reactor.install()
+
+        from twisted.internet import reactor
+        from twisted.internet.protocol import ServerFactory, ClientCreator
+        from twisted.protocols.basic import LineReceiver
+
+        self.PORT=int(self.app.options['port'])
+        self.reactor=reactor
+        core=self
+
+        class Client(LineReceiver):
+            def reg(self):
+                nick=core.app.options['nickname']
+                self.sendLine('{"sign":"name","args":["%s"]}' % nick)
+                core.api.info("Login as %s" % nick)
+
+            def init(self):
+                self.ready=False
+
+            def dataReceived(self, line):
+                if not self.ready:
+                    self.ready=True
+                    self.reg()
+                    core.status.setText('Me\nonline')
+                    core.status.setIcon(QIcon(core.api.icons['online']))
+                    print 'Greeting: [%s]' % line
+                    return ''
+
+
+                try:
+                    line=line.replace('\'','"').replace('\r\n','').replace('u"','"')
+                    line=json.loads(line)
+                    ln=line['sign']
+                    args=line['args']
+
+                    for arg in args:
+                        if not arg:
+                            args.remove(arg)
+                    try:
+                        m=core.app.getMethod('main',ln)
+                        print ln,m,args
+                        m(*args)
+                        core.app['debug']('Remote execution: %s (%s)' % (m.func_name,args))
+                    except Exception,e:
+                        core.app['error'](str(e))
+                except Exception,e:
+                    print line
+                    print e
+
+        self.client = ClientCreator(reactor, Client)
+
+        def onConnect(protocol):
+            self.api.info("Client connected successfully")
+            protocol.init()
+            self.protocol=protocol
+
+        self.client.onConnect=onConnect
+
+        
 
     def stream(self,*args):
         self.app['setStatusMessage']('%s at %s' % (self.hero.Name,self.hero.coord))

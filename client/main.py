@@ -444,6 +444,7 @@ class Springstone(QMainWindow,App):
 #        else:
 #            event.ignore()
 #            self.hide()
+        self.core.reactor.stop()
         event.accept()
         #TODO: fix exit stack
 #        self.core.stopServer()
