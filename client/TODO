@@ -4,3 +4,10 @@
 4. Something with vertical crap... =((
 5. Auto corner detection
 6. Mouse hover tile reaction
+
+Everything above is crap.
+Move world generation and tracking to server.
+Save and load hero state.
+Server database for registration and server save.
+Move with direction.
+Server UI control panel.

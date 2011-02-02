@@ -147,7 +147,7 @@ class Core(object):
                         m(self,*args)
                     core.app['debug']('Remote execution: %s (%s)' % (m.func_name,args))
                 except Exception,e:
-                    core.app['error'](str(e))
+                    core.app['error']('%s: %s' %(m,e))
                     self.sendLine("Wrong command.")
 
 

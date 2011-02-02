@@ -126,7 +126,7 @@ class Core(object):
             self.clients[uid]=friend
             self.clients[uid]['status']=self.api.exMethod('main','addListItem','%s\nonline' % friend['name'],icon='online')
             self.api.info("%s online" % friend['name'])
-            other=NPCs['other']
+            other=self.npcs['other']
             xy=eval(friend['coord'])
             other.spawn(self.stage[xy[1]][xy[0]])
             self.players[uid]=other
@@ -195,11 +195,11 @@ class Core(object):
                             args.remove(arg)
                     try:
                         m=core.app.getMethod('main',ln)
-                        print ln,m,args
+                        print "sign: %s; method: %s; args: %s;"%(ln,m,args)
                         m(*args)
                         core.app['debug']('Remote execution: %s (%s)' % (m.func_name,args))
                     except Exception,e:
-                        core.app['error'](str(e))
+                        core.app['error']('%s: %s' %(m,e))
                 except Exception,e:
                     print line
                     print e
