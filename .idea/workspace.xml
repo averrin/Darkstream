@@ -1,11 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/world.py" line="309" />
+    <bookmark url="file://$PROJECT_DIR$/client/world.py" line="310" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="25bcbac2-431b-42e1-9405-b3fd336708a7" name="Default" comment="Some info improvements">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/world.py" afterPath="$PROJECT_DIR$/world.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/HELP" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/login.ui" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/main.ui" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/branch-format" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/branch/branch.conf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/branch/format" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/branch/last-revision" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/branch/tags" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/checkout/conflicts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/checkout/dirstate" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/checkout/format" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/repository/format" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/repository/indices/283e8564131e18da913ef2df46aea256.iix" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/repository/indices/283e8564131e18da913ef2df46aea256.rix" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/repository/indices/283e8564131e18da913ef2df46aea256.six" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/repository/indices/283e8564131e18da913ef2df46aea256.tix" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/repository/pack-names" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/repository/packs/283e8564131e18da913ef2df46aea256.pack" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/bin/gtrial" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/twisted/plugins/dropin.cache" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/app.project" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/config.ini" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/main.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/.bzr/README" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/README" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/ghtTests/buttonStress.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/ghtTests/fakeAppButtonStress.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/ghtTests/testIterate.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/ghtTests/trivialscript.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/gtrial.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/qt4reactor.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/contrib/qt4reactor/twisted/plugins/qt4.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/README" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/core.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/base.py" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/HELP" afterPath="$PROJECT_DIR$/server/HELP" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/README" afterPath="$PROJECT_DIR$/client/README" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/TODO" afterPath="$PROJECT_DIR$/client/TODO" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app.project" afterPath="$PROJECT_DIR$/server/app.project" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/avlib.py" afterPath="$PROJECT_DIR$/shared/avlib.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/base.py" afterPath="$PROJECT_DIR$/server/base.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/config.ini" afterPath="$PROJECT_DIR$/server/config.ini" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/core.py" afterPath="$PROJECT_DIR$/client/core.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/items.py" afterPath="$PROJECT_DIR$/client/items.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/login.ui" afterPath="$PROJECT_DIR$/server/login.ui" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/magiclib.py" afterPath="$PROJECT_DIR$/client/magiclib.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/server/main.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/main.ui" afterPath="$PROJECT_DIR$/server/main.ui" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/npc.py" afterPath="$PROJECT_DIR$/client/npc.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/rpgbase.py" afterPath="$PROJECT_DIR$/client/rpgbase.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/sm.py" afterPath="$PROJECT_DIR$/shared/sm.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/sm.ui" afterPath="$PROJECT_DIR$/shared/sm.ui" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/stages.py" afterPath="$PROJECT_DIR$/client/stages.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/uniques.py" afterPath="$PROJECT_DIR$/client/uniques.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/weapons.py" afterPath="$PROJECT_DIR$/client/weapons.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/world.py" afterPath="$PROJECT_DIR$/client/world.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Nightgleam.iml" afterPath="$PROJECT_DIR$/.idea/Nightgleam.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Nightgleam.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,17 +86,8 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="core.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="0" selection-start="1935" selection-end="1935" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TODO" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TODO">
+      <file leaf-file-name="main.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
@@ -46,55 +95,64 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="main.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="19" selection-start="376" selection-end="376" vertical-scroll-proportion="0.4076087">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sm.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared/sm.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="0" selection-start="279" selection-end="279" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../Nightgleam/qt4reactor/README">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app.project" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/app.project">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="core.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/core.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="0" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="avlib.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avlib.py">
+        <entry file="file://$PROJECT_DIR$/shared/avlib.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="495" column="0" selection-start="15696" selection-end="15696" vertical-scroll-proportion="0.0">
+            <state line="480" column="0" selection-start="15370" selection-end="15370" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rpgbase.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/rpgbase.py">
+      <file leaf-file-name="world.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/world.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="558" column="0" selection-start="15078" selection-end="15078" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="518" column="0" selection-start="17093" selection-end="17093" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="world.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/world.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="31" selection-start="1458" selection-end="1458" vertical-scroll-proportion="0.5298913">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="stages.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/stages.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="0" selection-start="126" selection-end="126" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="npc.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/npc.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="0" selection-start="257" selection-end="257" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -114,10 +172,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/server/main.py" />
-        <option value="$PROJECT_DIR$/server/core.py" />
-        <option value="$PROJECT_DIR$/client/main.py" />
-        <option value="$PROJECT_DIR$/client/core.py" />
         <option value="$PROJECT_DIR$/game.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/tileset.py" />
@@ -129,6 +183,11 @@
         <option value="$PROJECT_DIR$/stages.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/world.py" />
+        <option value="$PROJECT_DIR$/client/main.py" />
+        <option value="$PROJECT_DIR$/client/world.py" />
+        <option value="$PROJECT_DIR$/client/core.py" />
+        <option value="$PROJECT_DIR$/shared/sm.py" />
+        <option value="$PROJECT_DIR$/server/main.py" />
       </list>
     </option>
   </component>
@@ -173,6 +232,30 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Nightgleam" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Nightgleam" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Nightgleam" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Nightgleam" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="Darkstream" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -185,10 +268,16 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
-    <property name="options.searchVisible" value="true" />
+    <property name="recentsLimit" value="5" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server" />
+      <recent name="$PROJECT_DIR$/contrib" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.main">
     <configuration default="false" name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -198,10 +287,10 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/server" />
       <option name="IS_MODULE_SDK" value="true" />
       <module name="Nightgleam" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server/main.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -352,13 +441,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1597" y="34" width="1372" height="738" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21833085" sideWeight="0.68267584" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21833085" sideWeight="0.68267584" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39977092" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3173242" sideWeight="0.99156827" order="2" side_tool="false" content_ui="tabs" x="584" y="130" width="1016" height="770" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -429,76 +518,108 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///usr/share/pyshared/twisted/python/log.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="0" selection-start="2126" selection-end="2126" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file:///usr/share/pyshared/twisted/internet/tcp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="453" column="0" selection-start="16598" selection-end="16598" vertical-scroll-proportion="0.21169356" />
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Dropbox/bin/Nightgleam/client/core.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="0" selection-start="3173" selection-end="3173" vertical-scroll-proportion="0.18850988" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../Springstone/plugins/Gmail/gmail.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config.ini">
+    <entry file="file://$PROJECT_DIR$/client/config.ini">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README">
+    <entry file="file://$PROJECT_DIR$/client/README">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core.py">
+    <entry file="file://$PROJECT_DIR$/client/TODO">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="0" selection-start="1935" selection-end="1935" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TODO">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avlib.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="495" column="0" selection-start="15696" selection-end="15696" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rpgbase.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="558" column="0" selection-start="15078" selection-end="15078" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="518" column="0" selection-start="17093" selection-end="17093" vertical-scroll-proportion="0.0">
+        <state line="5" column="0" selection-start="136" selection-end="136" vertical-scroll-proportion="0.20380434">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stages.py">
+    <entry file="file://$PROJECT_DIR$/client/rpgbase.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="126" selection-end="126" vertical-scroll-proportion="0.0" />
+        <state line="561" column="0" selection-start="15231" selection-end="15231" vertical-scroll-proportion="0.2853261">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/npc.py">
+    <entry file="file://$PROJECT_DIR$/client/stages.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="257" selection-end="257" vertical-scroll-proportion="0.0" />
+        <state line="11" column="0" selection-start="224" selection-end="224" vertical-scroll-proportion="0.2853261">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/world.py">
+    <entry file="file://$PROJECT_DIR$/client/npc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="31" selection-start="1458" selection-end="1458" vertical-scroll-proportion="0.5298913">
+        <state line="9" column="0" selection-start="211" selection-end="211" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/core.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="0" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/world.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/avlib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="480" column="0" selection-start="15370" selection-end="15370" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/sm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="0" selection-start="279" selection-end="279" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/app.project">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/contrib/qt4reactor/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Nightgleam/qt4reactor/README">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="19" selection-start="376" selection-end="376" vertical-scroll-proportion="0.4076087">
           <folding />
         </state>
       </provider>

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import sys
+sys.path.append('../shared')
 from avlib import Project, App, logger, API, loadIcons, getFileContent, cwd
 from PyQt4.QtGui import *
 from PyQt4 import uic
@@ -8,28 +10,23 @@ from datetime import datetime
 import os
 import re
 import time
-import sys
-from world import Layer,TILESET
 
 __author__ = 'averrin'
 
 
 from sm import SettingsManager
 
-icons=loadIcons(cwd+'icons/')
+icons=loadIcons('../icons/')
 
 starttime=datetime.now()
+
+#TODO: QDir QDirIterator
+
 
 class myAPI(API):
     def __init__(self):
         super(myAPI,self).__init__()
         self.logger=logger.name('api')
-
-    def setText(self,*args,**kwargs):
-        self.ex('setText')(*args,**kwargs)
-
-    def echo(self,*args,**kwargs):
-        self.ex('echo')(*args,**kwargs)
 
     def info(self,*args,**kwargs):
         self.ex('info')(*args,**kwargs)
@@ -54,6 +51,9 @@ class myLogger(API):
     def error(self,*args,**kwargs):
         self.ex('error')(*args,**kwargs)
 
+#TODO: log dockwidget to independent class
+#TODO: protect passwords
+
 class Springstone(QMainWindow,App):
     def __init__(self, *args,**kwargs):
         self.threads_=[]
@@ -65,7 +65,6 @@ class Springstone(QMainWindow,App):
         self.trayIconMenu = QMenu(self)
         App.__init__(self,*args,**kwargs)
         self.connect(self.trayIcon, SIGNAL('activated(QSystemTrayIcon::ActivationReason)'), self['toggle'])
-#        self.connect(self.textBrowser,SIGNAL('anchorClicked'),self.m_echo)
         self.trayIcon.setContextMenu(self.trayIconMenu)
         self.trayIcon.setIcon(QIcon(self.trayIconPixmap))
         self.resize(QSize(int(self.options['width']),int(self.options['height'])))
@@ -77,23 +76,6 @@ class Springstone(QMainWindow,App):
         self.toolBar.setMovable(False)
         self.pb=''
         self.mayhide=eval(self.options['hide'])
-#        self.textBrowser.setFont(QFont('Monospace'))
-#        self.textBrowser.setFontPointSize(18)
-
-
-#        self['dialog']('progress')
-        self.scene = QGraphicsScene()
-        self.graphicsView.setScene(self.scene)
-        self.graphicsView.mousePressEvent=self.mousePressEvent
-        self.graphicsView.mouseReleaseEvent=self.mouseReleaseEvent
-        self.graphicsView.mouseMoveEvent=self.mouseMoveEvent
-
-        self.cursor=self['drawImage'](Layer(TILESET['2_4_4'],alpha=True,trans=80),0,0)
-        self.cursor.setZValue(10)
-
-        screen = QDesktopWidget().screenGeometry()
-        QMainWindow.setGeometry(self,0, 0, screen.width(), screen.height())
-
 
         sm=SettingsManager(self)
         sm.setWindowIcon(QIcon(icons['configure']))
@@ -106,8 +88,7 @@ class Springstone(QMainWindow,App):
         self.connect(self.debugLine, SIGNAL("returnPressed()"),self.command)
 
         self.mainList.setIconSize(QSize(int(self.options['mlicon_size']),int(self.options['mlicon_size'])))
-        self.connect(self.scene, SIGNAL("pressed"), self['print'])
-        self.connect(self.graphicsView, SIGNAL("pressed"), self['print'])
+#        self.connect(self.mainList, SIGNAL("itemClicked(QListWidgetItem *)"), self.itemClicked)
         self.connect(self.mainList, SIGNAL("itemDoubleClicked(QListWidgetItem *)"), self.itemDoubleClicked)
 
         self['info']('Application initialized')
@@ -146,22 +127,6 @@ class Springstone(QMainWindow,App):
         uic.loadUi(uifile, window)
         return window
 
-    def m_echo(self,msg):
-#        dialog={'Darkstream':'Hello, kitty!','boom':'oops'}
-        self.mainBrowser.setHtml(msg.replace('\n','<br>'))
-#        try:
-#            msg=str(msg.path())
-#            self.textBrowser.append(dialog[msg])
-#        except:
-#            self.textBrowser.append(msg)
-#        print msg
-
-    def m_setText(self,msg):
-#        self.textBrowser.clear()
-#        self.textBrowser.setHtml(str(msg).decode('utf-8').replace('\n','<br>'))
-#        print msg
-        pass
-
     def m_createLoginWindow(self,uifile):
         window=QMainWindow()
         uic.loadUi(uifile, window)
@@ -192,7 +157,7 @@ class Springstone(QMainWindow,App):
         try:
             self.exMethod(item.plugin,'itemClicked',item)
         except:
-            self['error']('%s have no itemClicked() method' % item.plugin)
+            self['error']('%s have no itemClicked() method' % (item.plugin))
 
     def m_removeItem(self,item):
         #FIXME: this
@@ -204,7 +169,7 @@ class Springstone(QMainWindow,App):
         try:
             self.exMethod(item.plugin,'itemClicked',item)
         except:
-            self['error']('%s have no itemClicked() method' % item.plugin)
+            self['error']('%s have no itemClicked() method' % (item.plugin))
 
     def m_addListItem(self,*args,**kwargs):
         item=self.makeMessage(*args,**kwargs)
@@ -299,17 +264,8 @@ class Springstone(QMainWindow,App):
 
 
     def keyPressEvent(self, event):
-#        print(event.key())
         if event.key()==16777216:
             self.searchLine.clear()
-        elif event.key() in [87,16777235]:
-            self['n']()
-        elif event.key() in [83,16777237]:
-            self['s']()
-        elif event.key() in [65,16777234]:
-            self['w']()
-        elif event.key() in [68,16777236]:
-            self['e']()
 
     def appendSM(self,sm):
         self.smTB=QToolButton()
@@ -323,11 +279,11 @@ class Springstone(QMainWindow,App):
     def m_debug(self,msg):
         self.debugList.addItem(self.makeMessage(msg,'lightyellow','warning',ts=True,fgcolor='black'))
 
-#    def m_echo(self):
-#        if self.statusbar.currentMessage():
-#            self['busy']()
-#        else:
-#            self['done']()
+    def m_echo(self):
+        if self.statusbar.currentMessage():
+            self['busy']()
+        else:
+            self['done']()
 
     def m_exit(self):
         self.mayhide=False
@@ -362,9 +318,6 @@ class Springstone(QMainWindow,App):
             QMessageBox.critical(self,title,text)
         elif type=='about':
             QMessageBox.about(self,title,text)
-        elif type=='progress':
-            pd=QProgressDialog(title,text,0,0,self)
-            pd.show()
 
     def m_addToolButton(self,icon,plugin,method):
         tb=QToolButton()
@@ -419,9 +372,6 @@ class Springstone(QMainWindow,App):
                         (self.settings['version'],self.settings['email'],self.settings['author'],\
                         getFileContent(cwd+'README')))
 
-    def m_print(self,msg):
-        self.mainBrowser.insertHtml(msg+'<br>')
-
     def m_help(self):
         self['dialog']('about','Help',getFileContent(cwd+'HELP'))
 
@@ -445,60 +395,9 @@ class Springstone(QMainWindow,App):
 #            self.hide()
         event.accept()
         #TODO: fix exit stack
-#        self.core.stopServer()
-
-    def m_drawImage(self,img,x,y):
-#        print img, str(img), str(str(img))
-        pm=QPixmap(str(img))
-        if img.trans:
-            alphaChannel = QPixmap(pm.width(), pm.height())
-            alphaChannel.fill(QColor(img.trans, img.trans, img.trans))
-            pm.setAlphaChannel(alphaChannel)
-
-        if img.alpha:
-            mask=pm.createHeuristicMask()
-            pm.setMask(mask)
-
-        item=QGraphicsPixmapItem(pm)
-        self.scene.addItem(item)
-        item.setY(x)
-        item.setX(y)
-        return item
+        self.core.stopServer()
 
 
-    def m_drawText(self,text,x,y):
-        item=QGraphicsTextItem(text)
-        self.scene.addItem(item)
-        item.setY(x)
-        item.setX(y)
-        return item
-
-
-
-    def mousePressEvent(self, ev):
-        if ev.buttons() == Qt.LeftButton:
-            QGraphicsView.mousePressEvent(self.graphicsView, ev)
-        self.mouse = [ev.pos().x(), ev.pos().y()]
-
-    def mouseReleaseEvent(self, ev):
-        if ev.button() == Qt.LeftButton:
-            QGraphicsView.mouseReleaseEvent(self.graphicsView, ev)
-
-    def mouseMoveEvent(self, ev):
-#        if ev.buttons() == QtCore.Qt.LeftButton:
-#            QtGui.QGraphicsView.mouseMoveEvent(self, ev)
-#        if ev.buttons() in [QtCore.Qt.RightButton, QtCore.Qt.LeftButton]:
-#            m = self.matrix()
-#            m.translate(ev.pos().x()-self.mouse[0], ev.pos().y()-self.mouse[1])
-#            self.setMatrix(m)
-        self.mouse = [ev.pos().x(), ev.pos().y()]
-        try:
-            item=self.scene.itemAt(self.mouse[0],self.mouse[1])
-            self.coord.setHtml('<span style="color:green;background:black;">%d,%d -- %s</span>'%(self.mouse[0],self.mouse[1],item.tile.info()))
-            self.cursor.setPos(item.x(),item.y())
-        except Exception,e:
-#            print e
-            pass
 
 import threading
 class ItemWorker(threading.Thread):
@@ -531,13 +430,6 @@ def main():
     app=Springstone(project,logapi=logapi,api=api)
 
     app.show()
-#    app.textBrowser.setOpenLinks(False)
-#    app.textBrowser.setSource=app.m_echo
-#    app.textBrowser.setStyleSheet("QWidget {line-height: 0 !important;}")
-#    app.api.echo('<style>a { color: green; } a:visited { color: red; }</style>')
-#    app.api.echo('Welcome to <a href="Darkstream" class="link">Darkstream</a>.')
-#    app.api.echo('TODO: full-functionality UI')
-#    app.api.echo('TODO: Hero generation <a href="boom" class="link">wizard</a>')
     endtime=datetime.now()
     delta=endtime-starttime
     app['debug']('Initialization time: %s' % delta)

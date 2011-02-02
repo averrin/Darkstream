@@ -25,7 +25,7 @@ class Core(object):
         self.app['setText'](self.stage)
 #        self.app['echo']('<style>QWidget * {font-size: 18pt; color:blue;}</style>')
         self.app['print']('Welcome to Darkstream World!')
-        self.app['print']('<img src="icons/real_poison.png" height="64">')
+        self.app['print']('<img src="../icons/real_poison.png" height="64">')
         self.app['print'](open('TODO').read().replace('\n','<br>'))
         self.floor=0
         self.app.connect(self.app, SIGNAL('time'), self.stream)

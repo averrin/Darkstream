@@ -19,7 +19,7 @@ class SettingsManager(QMainWindow):
     def __init__(self, app, *args,**kwargs):
 #        App.__init__(self,*args,**kwargs)
         QMainWindow.__init__(self)
-        uic.loadUi(cwd+"sm.ui", self)
+        uic.loadUi("../shared/sm.ui", self)
         self.connect(self.restartButton, SIGNAL("clicked()"), self.restart)
 
         self.app=app

@@ -3,6 +3,7 @@ __author__ = 'averrin'
 import Image
 
 
+t_dir='../tilesets/'
 
 
 class Tileset(dict):
@@ -35,7 +36,7 @@ class Tileset(dict):
         self.load()
 
     def load(self):
-        infile=['tilesets/%s/%s.bmp' % (self.dir,i) for i in xrange(3)]
+        infile=[t_dir+'%s/%s.bmp' % (self.dir,i) for i in xrange(3)]
         for i,fname in enumerate(infile):
             try:
                 im = Image.open(fname)
@@ -44,25 +45,25 @@ class Tileset(dict):
                     for col in xrange(7):
                         box = ((xsize/8)*col ,(ysize/32)*row, (xsize/8)*(col+1), (ysize/32)*(row+1))
                         region = im.crop(box)
-                        region.save('tilesets/.temp/%d_%d_%d.png' % (i,col,row), "png")
+                        region.save(t_dir+'.temp/%d_%d_%d.png' % (i,col,row), "png")
             except Exception,e:
                 print e
         try:
-            im = Image.open('tilesets/%s/chars.png'%self.dir)
+            im = Image.open(t_dir+'%s/chars.png'%self.dir)
             xsize,ysize=im.size
             for row in xrange(15):
                 for col in xrange(31):
                     box = ((xsize/32)*col ,(ysize/16)*row, (xsize/32)*(col+1), (ysize/16)*(row+1))
                     region = im.crop(box)
-                    region.save('tilesets/.temp/char_%d_%d.png' % (col,row), "png")
+                    region.save(t_dir+'.temp/char_%d_%d.png' % (col,row), "png")
         except Exception,e:
             print e
 
     def __getitem__(self, item):
         try:
-            return 'tilesets/.temp/%s.png' % self.signs[item]
+            return t_dir+'.temp/%s.png' % self.signs[item]
         except:
-            return 'tilesets/.temp/%s.png' % item
+            return t_dir+'.temp/%s.png' % item
 
 TILESET=Tileset('default')
 
