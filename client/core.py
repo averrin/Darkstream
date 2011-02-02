@@ -159,6 +159,10 @@ class Core(object):
                 nick=core.app.options['nickname']
                 self.sendLine('{"sign":"name","args":["%s","%s"]}' % (nick,core.hero.coord))
                 core.api.info("Login as %s" % nick)
+                core.ci=self
+
+            def move(self):
+                self.sendLine('{"sign":"move","args":["%s","%s"]}' % core.hero.coord)
 
 
             def init(self):
@@ -253,6 +257,14 @@ class Core(object):
 
     def m_move(self,d):
         self.hero.move(d)
+        self.ci.move()
+
+    def m_p_move(self,char):
+        xy=eval(char['coord'])
+        uid=char['uid']
+        char=self.players[uid]
+        char.remove()
+        char.spawn(self.stage[xy[1]][xy[0]])
 
 
     def m_itemClicked(self,item):

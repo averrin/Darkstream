@@ -97,6 +97,9 @@ class Core(object):
             def new(self):
                 self.factory.sendMessageToAllClients('{"sign":"new","args":[{"uid":"%s","name":"%s","ip":"%s","coord":"%s"}]}' % (self.client.id,self.client.name,self.client.ip,self.client.coord))
 
+            def m_move(self,x,y):
+                self.client.coord=(int(x),int(y))
+                self.factory.sendMessageToAllClients('{"sign":"p_move","args":[{"uid":"%s","coord":"%s"}]}' % (self.client.id,self.client.coord))
             def uid(self):
                 self.sendLine('{"sign":"uid","args":["%s"]}' % self.client.id)
 
@@ -104,7 +107,7 @@ class Core(object):
                 cllist=[]
                 for client in core.clients:
                     client=core.clients[client]
-                    cllist.append({"uid":client.id,"name":client.name,"ip":client.ip,"coord":client.coord})
+                    cllist.append({"uid":client.id,"name":client.name,"ip":client.ip,"coord":str(client.coord)})
 
                 self.sendLine('{"sign":"list","args":%s}' % cllist)
 
