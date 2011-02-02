@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
+
+import sys
+sys.path.append('../shared')
 from rpgbase import Char
-from world import Layer,TILESET
+from world import Layer
 
 __author__ = 'averrin'
 
 class NPC(Char):
-    def __init__(self,chset,*args,**kwargs):
+    def __init__(self,chset,core,*args,**kwargs):
         Char.__init__(self,*args,**kwargs)
         self.coord=(0,0)
+        self.core=core
         self.signs={
-                    's':Layer(TILESET['char_%s_2'%chset]),
-                    'n':Layer(TILESET['char_%s_0'%chset]),
-                    'e':Layer(TILESET['char_%s_1'%chset]),
-                    'w':Layer(TILESET['char_%s_3'%chset]),
+                    's':Layer(self.core.TILESET['char_%s_2'%chset]),
+                    'n':Layer(self.core.TILESET['char_%s_0'%chset]),
+                    'e':Layer(self.core.TILESET['char_%s_1'%chset]),
+                    'w':Layer(self.core.TILESET['char_%s_3'%chset]),
                     }
         self.sign=self.signs['s']
 
@@ -45,12 +49,14 @@ class NPC(Char):
 class Hero(NPC):
     def __init__(self,*args,**kwargs):
         NPC.__init__(self,*args,**kwargs)
-def genHero():
-    hero=Hero(chset=10)
+def genHero(core):
+    hero=Hero(10,core)
     return hero
 
 
-NPCs={'Kiro':NPC(chset=9),'Hero':genHero(),'other':NPC(chset=6)}
+class NPCs(dict):
+    def __init__(self,core):
+        self.update({'Kiro':NPC(9,core),'Hero':genHero(core),'other':NPC(6,core)})
 
 #if __name__ == '__main__':
 #    core=Core()

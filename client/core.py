@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from world import WORLD
+import world
 from npc import NPCs
+from stages import stages
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import json
@@ -67,6 +68,9 @@ class Core(object):
         self.api.info("Client init successfully")
 
         #=====================
+        TILESET=world.Tileset(self.app.options['tileset'])
+        self.TILESET=TILESET
+        WORLD = world.World(stages,self)
         self.stage=WORLD.getStage('FS')
         self.stage.core=self
         self.app['setText'](self.stage)
@@ -85,12 +89,14 @@ class Core(object):
         self.app.statusbar.showMessage(str('wtf?'))
         self.stream.start()
         self.draw(self.stage)
-        for npc in NPCs:
-            NPCs[npc].core=self
-        self.hero=NPCs['Hero']
+        self.npcs=NPCs(self)
+        for npc in self.npcs:
+            self.npcs[npc].core=self
+            self.npcs[npc].TILESET=TILESET
+        self.hero=self.npcs['Hero']
         self.h=self.stage[4][6]
         self.hero.spawn(self.h)
-        kiro=NPCs['Kiro']
+        kiro=self.npcs['Kiro']
         kiro.spawn(self.stage[5][12])
 
 

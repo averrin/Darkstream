@@ -9,6 +9,10 @@ t_dir='../tilesets/'
 class Tileset(dict):
     def __init__(self,dir):
         self.dir=dir
+        try:
+            old_name=open(t_dir+'.temp/tileset_name').read()
+        except:
+            old_name=''
         self.signs={
          0:'1_2_0',
          1:'1_0_15',
@@ -33,7 +37,8 @@ class Tileset(dict):
          'window_v':'1_1_20',
          'window_h':'1_1_20',
         }
-        self.load()
+        if dir!=old_name:
+            self.load()
 
     def load(self):
         infile=[t_dir+'%s/%s.bmp' % (self.dir,i) for i in xrange(3)]
@@ -56,6 +61,8 @@ class Tileset(dict):
                     box = ((xsize/32)*col ,(ysize/16)*row, (xsize/32)*(col+1), (ysize/16)*(row+1))
                     region = im.crop(box)
                     region.save(t_dir+'.temp/char_%d_%d.png' % (col,row), "png")
+            f=open(t_dir+'.temp/tileset_name','w')
+            f.write(self.dir)
         except Exception,e:
             print e
 
@@ -64,8 +71,6 @@ class Tileset(dict):
             return t_dir+'.temp/%s.png' % self.signs[item]
         except:
             return t_dir+'.temp/%s.png' % item
-
-TILESET=Tileset('default')
 
 class Layer(object):
     def __init__(self,type,alpha=True,trans=0):
@@ -77,8 +82,9 @@ class Layer(object):
         return self.type
 
 class Tile(object):
-    def __init__(self,x=0,y=0,type='none'):
+    def __init__(self,x=0,y=0,type='none',stage=''):
         self.type=type
+        self.stage=stage
         self.x=x
         self.y=y
         self.coords=(x,y)
@@ -92,13 +98,13 @@ class Tile(object):
 
     def chType(self,type,alpha=True):
 #        if self.type=='none':
-#            self.layers[0]=TILESET[type]
+#            self.layers[0]=self.stage.TILESET[type]
 #        else:
         if not self.char:
-            self.layers.append(Layer(TILESET[type],alpha))
+            self.layers.append(Layer(self.stage.TILESET[type],alpha))
         else:
             self.layers.remove(self.layers[-1])
-            self.layers.append(Layer(TILESET[type],alpha))
+            self.layers.append(Layer(self.stage.TILESET[type],alpha))
             self.layers.append(self.char.sign)
         self.type=type
 
@@ -162,8 +168,8 @@ class Tile(object):
 
     
 class TransTile(Tile):
-    def __init__(self,x=0,y=0,type=1):
-        Tile.__init__(self,x,y,type)
+    def __init__(self,x=0,y=0,type=1,stage=''):
+        Tile.__init__(self,x,y,type,stage=stage)
         self.chType(type)
 
     def onCharEnter(self,char):
@@ -175,23 +181,23 @@ class TransTile(Tile):
 
 
 class Wall(Tile):
-    def __init__(self,x=0,y=0,type='v'):
+    def __init__(self,x=0,y=0,type='v',stage=''):
         try:
-            Tile.__init__(self,x,y,{'h':2,'v':1}[type])
+            Tile.__init__(self,x,y,{'h':2,'v':1}[type],stage=stage)
         except:
-            Tile.__init__(self,x,y,type)
+            Tile.__init__(self,x,y,type,stage=stage)
         self.chType(self.type)
 
     def onCome(self,char):
         return False
 
 class InternalWall(Tile):
-    def __init__(self,x=0,y=0,type='up',id=0):
+    def __init__(self,x=0,y=0,type='up',id=0,stage=''):
         if type=='up':
             self.type=2
         else:
             self.type=10
-        Tile.__init__(self,x,y,self.type)
+        Tile.__init__(self,x,y,self.type,stage=stage)
         self.chType(self.type,False)
         self.id=id
 
@@ -219,7 +225,7 @@ class InternalWall(Tile):
 class Window(Tile):
     def __init__(self,x=0,y=0,type='v'):
         Tile.__init__(self,x,y,{'h':'window_h','v':'window_v'}[type])
-#        self.layers[0]=TILESET[self.type]
+#        self.layers[0]=self.stage.TILESET[self.type]
         self.chType(self.type)
 
     def onCome(self,char):
@@ -230,13 +236,13 @@ class Window(Tile):
             return True
 
 class Door(Tile): #TODO: do something for InternalWalls
-    def __init__(self,x=0,y=0,type='v',closed=False,locked=False,lock_force=0):
+    def __init__(self,x=0,y=0,type='v',closed=False,locked=False,lock_force=0,stage=''):
         self.closed=closed
         self.locked=locked
         self.d=type
         self.dict={'h':{False:'door_open_h',True:'door_closed_h'},'v':{False:'door_open_v',True:'door_closed_v'}}
-        Tile.__init__(self,x,y,self.dict[self.d][closed])
-        self.layers.append(Layer(TILESET['door_open_h'],False))
+        Tile.__init__(self,x,y,self.dict[self.d][closed],stage=stage)
+        self.layers.append(Layer(self.stage.TILESET['door_open_h'],False))
         if closed:
             self.chType(self.dict[self.d][self.closed])
 
@@ -284,17 +290,20 @@ class Stage(list):
     def __init__(self,rows=1,columns=0,room=False):
         self.rows=rows
         self.columns=columns
+        self.room=room
+
+    def init(self):
         for i in xrange(self.rows):
             self.append([])
             for c in xrange(self.columns):
-                t=Tile(c,i)
+                t=Tile(c,i,stage=self)
                 t.stage=self
                 self[i].append(t)
-        if room:
+        if self.room:
             for i,row in enumerate(self):
                 if not i or i == self.rows-1:
                     for c,t in enumerate(row):
-                        row[c]=Wall(c,i,'h')
+                        row[c]=Wall(c,i,'h',stage=self)
                         #implement internalwall
                         try:
 #                            self[i+1][c].chType(10,False)
@@ -317,8 +326,8 @@ class Stage(list):
                         if t.type=='none':
                             t.chType(0,False)
                     if i!=self.rows:
-                        row[0]=Wall(c,i,'v')
-                        row[-1]=Wall(c,i,'v')
+                        row[0]=Wall(c,i,'v',stage=self)
+                        row[-1]=Wall(c,i,'v',stage=self)
 
     def getList(self):
         __list=[]
@@ -343,18 +352,18 @@ class Stage(list):
     def addRow(self):
         self.append([])
         for c in xrange(self.columns):
-            self[len(self)-1].append(Tile(c,len(self)-1))
+            self[len(self)-1].append(Tile(c,len(self)-1,stage=self))
 
     def addColumn(self):
         for i,row in enumerate(self):
-            row.append(Tile(len(row),i))
+            row.append(Tile(len(row),i,stage=self))
 
     def addVWall(self,x,start=0,end=0):
         if not end:
             end=self.rows-1
         for i,row in enumerate(self):
             if i in range(start,end) and i!=0 and i!=self.rows-1:
-                row[x]=Wall(row[x].x,row[i].y,'v')
+                row[x]=Wall(row[x].x,row[i].y,'v',stage=self)
             elif not i:
                 row[x].chType(9)
             elif i==self.rows-1:
@@ -366,8 +375,8 @@ class Stage(list):
         row=self[y]
         for i,t in enumerate(row):
             if i in range(start,end) and i!=0 and i!=self.columns-1:
-                self.set(t.x,t.y,InternalWall(type='up',id=id))
-                self.set(t.x,t.y+1,InternalWall(type='down',id=id))
+                self.set(t.x,t.y,InternalWall(type='up',id=id,stage=self))
+                self.set(t.x,t.y+1,InternalWall(type='down',id=id,stage=self))
 #                self[y+1][i]=InternalWall(t.x,t.y+1,'down')
 
 
@@ -377,7 +386,7 @@ class Stage(list):
             if row[0].y in range(tl[1],br[1]):
                 for t in row:
                     if t.x in range(tl[0],br[0]):
-#                        if type in TILESET:
+#                        if type in self.stage.TILESET:
                         t.chType(type)
 #                        else:
 #                            t.sign=type
@@ -395,11 +404,11 @@ class Stage(list):
         return __str
 
     def addPass(self,x,y):
-        _pass=Tile()
+        _pass=Tile(stage=self)
         _pass.chType(14)
         self.set(x,y,_pass)
-        self.set(x,y-1,Wall(type=13))
-        self.set(x,y+1,TransTile(type=1))
+        self.set(x,y-1,Wall(type=13,stage=self))
+        self.set(x,y+1,TransTile(type=1,stage=self))
 
 class Room(list):
     def __init__(self,tiles,tl,br,title=''):
@@ -432,7 +441,8 @@ class Room(list):
 
 
 class Furniture(object): #Grafics artifacts=(
-    def __init__(self,height,width):
+    def __init__(self,height,width,stage=''):
+        self.stage=stage
         self.h=height
         self.w=width
         self.list=[]
@@ -442,7 +452,7 @@ class Furniture(object): #Grafics artifacts=(
                 self.list[row].append('')
 
     def setPart(self,row,col,type):
-        self.list[row][col]=Layer(TILESET[type],True)
+        self.list[row][col]=Layer(self.stage.TILESET[type],True)
 
     def setMap(self,map):
         for i,row in enumerate(map):
@@ -459,11 +469,13 @@ class Furniture(object): #Grafics artifacts=(
 
 from stages import stages
 class World(object):
-    def __init__(self,stages):
+    def __init__(self,stages,core):
         self.stages=stages
+        for stage in self.stages:
+            self.stages[stage].TILESET=core.TILESET
 
     def getStage(self,id):
-        return self.stages[id].gen()
+        stage=self.stages[id]
+        return stage.gen()
 
-WORLD = World(stages)
 

@@ -10,7 +10,7 @@ from datetime import datetime
 import os
 import re
 import time
-from world import Layer,TILESET
+from world import Layer
 
 __author__ = 'averrin'
 
@@ -89,8 +89,6 @@ class Springstone(QMainWindow,App):
         self.graphicsView.mouseReleaseEvent=self.mouseReleaseEvent
         self.graphicsView.mouseMoveEvent=self.mouseMoveEvent
 
-        self.cursor=self['drawImage'](Layer(TILESET['2_4_4'],alpha=True,trans=80),0,0)
-        self.cursor.setZValue(10)
 
         screen = QDesktopWidget().screenGeometry()
         QMainWindow.setGeometry(self,0, 0, screen.width(), screen.height())
@@ -128,6 +126,10 @@ class Springstone(QMainWindow,App):
         self.toolBar.addWidget(self.searchLine)
         self.connect(self.searchLine, SIGNAL("textChanged(QString)"),self.search)
         self.core.onAppReady()
+
+
+        self.cursor=self['drawImage'](Layer('',alpha=True,trans=80),0,0)
+        self.cursor.setZValue(10)
 
     def search(self,line):
         result=self.mainList.findItems(line,Qt.MatchContains)
@@ -496,7 +498,7 @@ class Springstone(QMainWindow,App):
         self.mouse = [ev.pos().x(), ev.pos().y()]
         try:
             item=self.scene.itemAt(self.mouse[0],self.mouse[1])
-            self.coord.setHtml('<span style="color:green;background:black;">%d,%d -- %s</span>'%(self.mouse[0],self.mouse[1],item.tile.info()))
+#            self.coord.setHtml('<span style="color:green;background:black;">%d,%d -- %s</span>'%(self.mouse[0],self.mouse[1],item.tile.info()))
             self.cursor.setPos(item.x(),item.y())
         except Exception,e:
 #            print e
